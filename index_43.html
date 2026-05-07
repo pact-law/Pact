@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PACT | Legal Armor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Lexend:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── TOKENS ───────────────────────────────────────────── */
+    :root {
+      --bg:           #080808;
+      --surface:      #0f0d0a;
+      --glass-bg:     rgba(18,14,9,0.72);
+      --glass-hover:  rgba(30,22,12,0.82);
+      --bronze:       #CD7F32;
+      --bronze-light: #e8a84e;
+      --bronze-dim:   rgba(205,127,50,0.35);
+      --bronze-faint: rgba(205,127,50,0.09);
+      --bronze-glow:  rgba(205,127,50,0.55);
+      --red-flag:     #e05a5a;
+      --red-faint:    rgba(224,90,90,0.12);
+      --green:        #3ddc84;
+      --text-hi:      #ece8e0;
+      --text-mid:     #9e9489;
+      --text-lo:      #4a4540;
+      --radius:       20px;
+      --radius-sm:    12px;
+      --ease:         cubic-bezier(0.22,1,0.36,1);
+      --font-d:       'Cormorant Garamond', serif;
+      --font-b:       'Lexend', sans-serif;
+      --font-m:       'Space Mono', monospace;
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+
+    body{
+      background:var(--bg);
+      color:var(--text-hi);
+      font-family:var(--font-b);
+      font-weight:300;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* ── BG ATMOSPHERE ────────────────────────────────────── */
+    .bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;}
+    .bg-layer::before{
+      content:'';position:absolute;top:-15%;left:50%;transform:translateX(-50%);
+      width:900px;height:600px;
+      background:radial-gradient(ellipse at center,rgba(205,127,50,0.07) 0%,transparent 70%);
+      animation:pulse-glow 8s ease-in-out infinite alternate;
+    }
+    .bg-layer::after{
+      content:'';position:absolute;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity:.45;
+    }
+    @keyframes pulse-glow{
+      from{opacity:.6;transform:translateX(-50%) scale(1);}
+      to{opacity:1;transform:translateX(-50%) scale(1.08);}
+    }
+    .scan-line{
+      position:fixed;width:100%;height:1px;
+      background:linear-gradient(90deg,transparent 0%,var(--bronze-dim) 30%,var(--bronze-dim) 70%,transparent 100%);
+      opacity:0;animation:scan 14s linear infinite;pointer-events:none;z-index:1;
+    }
+    .scan-line:nth-child(2){animation-delay:4.5s;}
+    .scan-line:nth-child(3){animation-delay:9s;}
+    @keyframes scan{
+      0%{top:-2px;opacity:0;}5%{opacity:.3;}95%{opacity:.3;}100%{top:100%;opacity:0;}
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────── */
+    .app{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;}
+
+    /* ── TOP NAV ──────────────────────────────────────────── */
+    .topnav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 32px;border-bottom:1px solid rgba(205,127,50,0.1);
+      background:rgba(8,8,8,0.6);backdrop-filter:blur(20px);
+      position:sticky;top:0;z-index:50;
+    }
+    .nav-logo{
+      font-family:var(--font-d);font-size:1.6rem;font-weight:700;letter-spacing:.3em;
+      background:linear-gradient(160deg,#e8a84e 0%,#cd7f32 45%,#8b5a1e 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .nav-tabs{display:flex;gap:4px;}
+    .nav-tab{
+      font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+      padding:7px 16px;border-radius:8px;border:1px solid transparent;
+      background:none;color:var(--text-lo);cursor:pointer;transition:.25s var(--ease);
+    }
+    .nav-tab:hover{color:var(--text-mid);background:rgba(255,255,255,.04);}
+    .nav-tab.active{color:var(--bronze);border-color:var(--bronze-dim);background:var(--bronze-faint);}
+    .nav-key-btn{
+      font-family:var(--font-m);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+      padding:7px 14px;border-radius:8px;border:1px solid var(--bronze-dim);
+      background:var(--bronze-faint);color:var(--bronze);cursor:pointer;
+      display:flex;align-items:center;gap:6px;transition:.25s var(--ease);
+    }
+    .nav-key-btn:hover{background:rgba(205,127,50,.15);box-shadow:0 0 14px rgba(205,127,50,.15);}
+    .key-pip{width:6px;height:6px;border-radius:50%;background:var(--bronze);animation:blink 2s step-end infinite;}
+    .key-pip.no-key{background:var(--red-flag);}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+
+    /* ── PAGES ────────────────────────────────────────────── */
+    .page{display:none;flex:1;padding:48px 24px 80px;max-width:860px;margin:0 auto;width:100%;}
+    .page.active{display:block;animation:rise .5s var(--ease) both;}
+    @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ── GLASS CARD ───────────────────────────────────────── */
+    .glass{
+      background:var(--glass-bg);backdrop-filter:blur(28px) saturate(160%);
+      -webkit-backdrop-filter:blur(28px) saturate(160%);
+      border:1px solid var(--bronze-dim);border-radius:var(--radius);
+      box-shadow:0 0 0 1px rgba(0,0,0,.5),0 24px 64px rgba(0,0,0,.7),
+                 inset 0 1px 0 rgba(205,127,50,.1);
+    }
+
+    /* ── SECTION LABEL ────────────────────────────────────── */
+    .sect-label{
+      font-family:var(--font-m);font-size:.58rem;letter-spacing:.3em;
+      color:var(--text-lo);text-transform:uppercase;margin-bottom:20px;
+    }
+    .sect-title{
+      font-family:var(--font-d);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:600;
+      color:var(--text-hi);line-height:1.1;margin-bottom:8px;
+    }
+    .sect-sub{font-size:.8rem;color:var(--text-mid);line-height:1.7;margin-bottom:32px;}
+
+    /* ── FORM ELEMENTS ────────────────────────────────────── */
+    .field{margin-bottom:20px;}
+    .field label{
+      display:block;font-family:var(--font-m);font-size:.6rem;letter-spacing:.2em;
+      text-transform:uppercase;color:var(--text-lo);margin-bottom:8px;
+    }
+    .field input,.field textarea,.field select{
+      width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+      border-radius:10px;padding:12px 16px;color:var(--text-hi);font-family:var(--font-b);
+      font-size:.85rem;font-weight:300;transition:.25s var(--ease);outline:none;
+      resize:vertical;
+    }
+    .field input:focus,.field textarea:focus,.field select:focus{
+      border-color:var(--bronze-dim);background:rgba(205,127,50,.05);
+      box-shadow:0 0 0 3px rgba(205,127,50,.08);
+    }
+    .field textarea{min-height:120px;}
+    .field select option{background:#111;color:var(--text-hi);}
+
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+    /* ── BUTTONS ──────────────────────────────────────────── */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:var(--font-m);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+      padding:13px 28px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+      transition:.3s var(--ease);font-weight:700;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,#cd7f32,#8b5a2b);color:#060404;
+      box-shadow:0 4px 20px rgba(0,0,0,.4);
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 24px rgba(205,127,50,.3);}
+    .btn-primary:active{transform:translateY(0);}
+    .btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
+    .btn-ghost{background:rgba(255,255,255,.04);color:var(--text-mid);border:1px solid rgba(255,255,255,.08);}
+    .btn-ghost:hover{background:rgba(255,255,255,.07);color:var(--text-hi);}
+
+    /* ── LOADING SPINNER ──────────────────────────────────── */
+    .spinner{
+      width:16px;height:16px;border:2px solid rgba(6,4,4,.4);
+      border-top-color:#060404;border-radius:50%;
+      animation:spin .7s linear infinite;display:none;
+    }
+    .loading .spinner{display:block;}
+    .loading .btn-text{display:none;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ── OUTPUT BOX ───────────────────────────────────────── */
+    .output-box{
+      margin-top:28px;padding:28px;border-radius:var(--radius);
+      background:rgba(10,8,5,.8);border:1px solid var(--bronze-dim);
+      display:none;
+    }
+    .output-box.visible{display:block;animation:rise .4s var(--ease) both;}
+    .output-header{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(205,127,50,.15);
+    }
+    .output-label{font-family:var(--font-m);font-size:.58rem;letter-spacing:.25em;color:var(--bronze);text-transform:uppercase;}
+    .output-content{
+      font-size:.82rem;line-height:1.9;color:var(--text-mid);
+      white-space:pre-wrap;font-family:var(--font-b);font-weight:300;
+    }
+    .output-content strong{color:var(--text-hi);font-weight:500;}
+
+    /* ── SCANNER SPECIFIC ─────────────────────────────────── */
+    .drop-zone{
+      border:2px dashed rgba(205,127,50,.25);border-radius:var(--radius);
+      padding:40px;text-align:center;cursor:pointer;transition:.3s var(--ease);
+      background:rgba(205,127,50,.03);margin-bottom:16px;
+    }
+    .drop-zone:hover,.drop-zone.dragover{
+      border-color:var(--bronze-dim);background:var(--bronze-faint);
+    }
+    .drop-zone-icon{font-size:2rem;margin-bottom:12px;opacity:.5;}
+    .drop-zone p{font-size:.78rem;color:var(--text-lo);line-height:1.6;}
+    .drop-zone span{color:var(--bronze);cursor:pointer;}
+
+    .flag-highlight{
+      background:rgba(224,90,90,.18);border-bottom:2px solid var(--red-flag);
+      border-radius:3px;padding:1px 3px;color:#f08080;font-weight:500;
+      position:relative;cursor:help;
+    }
+    .flag-highlight.warning{
+      background:rgba(205,127,50,.18);border-bottom-color:var(--bronze);color:var(--bronze-light);
+    }
+
+    .flag-summary{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding-top:16px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .flag-tag{
+      font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;
+      padding:4px 10px;border-radius:999px;text-transform:uppercase;
+    }
+    .flag-tag.danger{background:var(--red-faint);border:1px solid rgba(224,90,90,.3);color:var(--red-flag);}
+    .flag-tag.warn{background:var(--bronze-faint);border:1px solid var(--bronze-dim);color:var(--bronze);}
+
+    .scanner-text{
+      width:100%;min-height:200px;background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);border-radius:12px;
+      padding:16px;color:var(--text-hi);font-family:var(--font-b);font-size:.82rem;
+      line-height:1.8;resize:vertical;outline:none;transition:.25s var(--ease);
+    }
+    .scanner-text:focus{border-color:var(--bronze-dim);box-shadow:0 0 0 3px rgba(205,127,50,.08);}
+
+    .scanned-display{
+      min-height:120px;font-size:.82rem;line-height:1.9;color:var(--text-mid);
+      font-family:var(--font-b);font-weight:300;
+    }
+
+    /* ── HOME PAGE ────────────────────────────────────────── */
+    .home-header{text-align:center;margin-bottom:56px;}
+    .home-wordmark{
+      font-family:var(--font-d);font-weight:700;font-size:clamp(4rem,10vw,7rem);
+      letter-spacing:.35em;text-transform:uppercase;line-height:1;
+      background:linear-gradient(160deg,#e8a84e 0%,#cd7f32 40%,#8b5a1e 70%,#cd7f32 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      filter:drop-shadow(0 0 40px rgba(205,127,50,.25));
+      animation:rise 1s var(--ease) both;
+    }
+    .home-tagline{
+      font-family:var(--font-m);font-size:.62rem;letter-spacing:.35em;
+      color:var(--text-lo);text-transform:uppercase;margin-top:12px;
+      animation:rise 1s .1s var(--ease) both;
+    }
+    .version-badge{
+      display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);
+      font-size:.58rem;color:var(--bronze);border:1px solid var(--bronze-dim);
+      padding:4px 12px;border-radius:999px;margin-top:16px;letter-spacing:.15em;
+      background:var(--bronze-faint);animation:rise 1s .2s var(--ease) both;
+    }
+
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+    .mode-card{
+      padding:28px 18px 24px;border-radius:var(--radius-sm);
+      background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+      cursor:pointer;transition:.35s var(--ease);text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      position:relative;overflow:hidden;
+    }
+    .mode-card::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--bronze),transparent);
+      transform:scaleX(0);transition:.35s var(--ease);
+    }
+    .mode-card:hover{
+      background:var(--glass-hover);border-color:var(--bronze-dim);
+      transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 20px rgba(205,127,50,.08);
+    }
+    .mode-card:hover::after{transform:scaleX(1);}
+    .mode-icon-wrap{
+      width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+      background:rgba(205,127,50,.1);border:1px solid rgba(205,127,50,.2);color:var(--bronze);
+      transition:.35s var(--ease);
+    }
+    .mode-card:hover .mode-icon-wrap{background:rgba(205,127,50,.18);box-shadow:0 0 16px rgba(205,127,50,.2);}
+    .mode-name{font-family:var(--font-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-hi);}
+    .mode-desc{font-size:.7rem;color:var(--text-lo);line-height:1.5;}
+    .mode-badge{
+      font-family:var(--font-m);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--bronze);background:var(--bronze-faint);border:1px solid var(--bronze-dim);
+      border-radius:999px;padding:2px 9px;
+    }
+
+    .status-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+    .status-pill{
+      display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:.56rem;
+      letter-spacing:.12em;color:var(--text-lo);background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:4px 12px;
+    }
+    .pip{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+    .pip.warn{background:var(--bronze);box-shadow:0 0 6px var(--bronze);}
+
+    /* ── API KEY SCREEN ───────────────────────────────────── */
+    .key-screen{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(4,3,2,.97);backdrop-filter:blur(20px);
+      display:flex;align-items:center;justify-content:center;padding:24px;
+    }
+    .key-card{
+      width:100%;max-width:480px;padding:44px;
+      background:rgba(14,11,7,.92);border:1px solid var(--bronze-dim);
+      border-radius:var(--radius);box-shadow:0 32px 80px rgba(0,0,0,.8);
+      animation:rise .5s var(--ease) both;
+    }
+    .key-gavel{text-align:center;margin-bottom:24px;}
+    .key-wordmark{
+      font-family:var(--font-d);font-size:3rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;
+      background:linear-gradient(160deg,#e8a84e 0%,#cd7f32 50%,#8b5a1e 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      display:block;margin-bottom:4px;
+    }
+    .key-sub{font-family:var(--font-m);font-size:.55rem;letter-spacing:.3em;color:var(--text-lo);text-transform:uppercase;}
+    .key-divider{height:1px;background:linear-gradient(90deg,transparent,var(--bronze-dim),transparent);margin:28px 0;}
+    .key-title{font-family:var(--font-d);font-size:1.5rem;font-weight:600;color:var(--text-hi);margin-bottom:8px;}
+    .key-body{font-size:.78rem;color:var(--text-mid);line-height:1.8;margin-bottom:24px;}
+    .key-body a{color:var(--bronze);text-decoration:none;}
+    .key-body a:hover{text-decoration:underline;}
+    .key-input-wrap{position:relative;margin-bottom:16px;}
+    .key-input{
+      width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+      border-radius:10px;padding:13px 44px 13px 16px;color:var(--text-hi);
+      font-family:var(--font-m);font-size:.75rem;outline:none;transition:.25s var(--ease);
+      letter-spacing:.05em;
+    }
+    .key-input:focus{border-color:var(--bronze-dim);box-shadow:0 0 0 3px rgba(205,127,50,.08);}
+    .key-toggle{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;color:var(--text-lo);
+      display:flex;align-items:center;transition:.2s;
+    }
+    .key-toggle:hover{color:var(--text-mid);}
+    .key-note{
+      font-family:var(--font-m);font-size:.55rem;letter-spacing:.1em;color:var(--text-lo);
+      text-transform:uppercase;margin-bottom:20px;line-height:1.7;
+    }
+    .key-note span{color:var(--bronze);}
+    .key-error{
+      font-family:var(--font-m);font-size:.6rem;color:var(--red-flag);margin-bottom:12px;
+      display:none;padding:8px 12px;background:var(--red-faint);border-radius:8px;border:1px solid rgba(224,90,90,.2);
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    .footer{
+      text-align:center;padding:24px;border-top:1px solid rgba(255,255,255,.04);
+      position:relative;z-index:2;
+    }
+    .footer-disclaimer{
+      font-family:var(--font-m);font-size:.52rem;letter-spacing:.1em;color:var(--text-lo);
+      text-transform:uppercase;line-height:1.9;max-width:480px;margin:0 auto 12px;
+    }
+    .footer-disclaimer span{color:var(--bronze);opacity:.7;}
+
+    /* ── PRINT STYLES ─────────────────────────────────────── */
+    @media print{
+      .topnav,.bg-layer,.scan-line,.footer,.btn,.nav-key-btn{display:none!important;}
+      body{background:#fff;color:#000;}
+      .output-box{display:block!important;border:1px solid #ccc;background:#fff;}
+      .output-content{color:#000;}
+      .glass{background:#fff;border:1px solid #ddd;box-shadow:none;}
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media(max-width:580px){
+      .mode-grid{grid-template-columns:1fr;}
+      .field-row{grid-template-columns:1fr;}
+      .topnav{padding:14px 16px;}
+      .nav-tabs{display:none;}
+      .page{padding:32px 16px 60px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-layer"></div>
+<div class="scan-line"></div>
+<div class="scan-line"></div>
+<div class="scan-line"></div>
+
+<!-- ══ API KEY SCREEN ════════════════════════════════════════ -->
+<div class="key-screen" id="keyScreen">
+  <div class="key-card">
+    <div class="key-gavel">
+      <svg width="52" height="52" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 16px rgba(205,127,50,.5))">
+        <defs>
+          <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e8a84e"/>
+            <stop offset="50%" stop-color="#cd7f32"/>
+            <stop offset="100%" stop-color="#7a4d1a"/>
+          </linearGradient>
+        </defs>
+        <rect x="8" y="48" width="38" height="8" rx="4" transform="rotate(-45 8 48)" fill="url(#bg2)" opacity=".95"/>
+        <rect x="36" y="10" width="26" height="14" rx="4" transform="rotate(-45 36 10)" fill="url(#bg2)"/>
+        <rect x="42" y="16" width="26" height="7" rx="3" transform="rotate(-45 42 16)" fill="#e8a84e" opacity=".4"/>
+        <rect x="8" y="56" width="20" height="8" rx="3" fill="#1a1008" stroke="url(#bg2)" stroke-width="1.2"/>
+      </svg>
+      <span class="key-wordmark">PACT</span>
+      <div class="key-sub">Legal Armor · Powered by Gemini</div>
+    </div>
+    <div class="key-divider"></div>
+    <div class="key-title">Connect your API Key</div>
+    <p class="key-body">
+      Pact runs entirely in your browser — no servers, no data sent anywhere except directly to Google's Gemini API with <em>your own key</em>.<br/><br/>
+      Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> → Create API key → paste below.
+    </p>
+    <div class="key-input-wrap">
+      <input class="key-input" id="keyInput" type="password" placeholder="AIza...your Gemini key" autocomplete="off" spellcheck="false"/>
+      <button class="key-toggle" id="keyToggle" onclick="toggleKeyVis()" title="Show/hide key">
+        <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="key-note">
+      Your key is stored only in <span>localStorage</span> — never transmitted to any third party.<br/>
+      Pact only calls <span>generativelanguage.googleapis.com</span>.
+    </div>
+    <div class="key-error" id="keyError">Invalid or missing key. Please check and try again.</div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveKey()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Unlock Pact
+    </button>
+  </div>
+</div>
+
+<!-- ══ APP SHELL ═════════════════════════════════════════════ -->
+<div class="app" id="appShell" style="display:none;">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="nav-logo">PACT</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home',this)">Home</button>
+      <button class="nav-tab" onclick="showPage('drafter',this)">Drafter</button>
+      <button class="nav-tab" onclick="showPage('scanner',this)">Scanner</button>
+      <button class="nav-tab" onclick="showPage('codex',this)">Codex</button>
+    </div>
+    <button class="nav-key-btn" onclick="resetKey()">
+      <span class="key-pip" id="navPip"></span>
+      <span id="navKeyLabel">Key Active</span>
+    </button>
+  </nav>
+
+  <!-- ── HOME PAGE ────────────────────────────────────────── -->
+  <div class="page active" id="page-home">
+    <div class="home-header">
+      <div class="home-wordmark">PACT</div>
+      <div class="home-tagline">Legal Armor for the Next Gen · Malaysia</div>
+      <div style="display:flex;justify-content:center;margin-top:14px;">
+        <div class="version-badge">
+          <span class="key-pip"></span>
+          v1.0 · Malaysia · Gemini 2.5 Flash
+        </div>
+      </div>
+    </div>
+
+    <div class="glass" style="padding:36px;margin-bottom:16px;">
+      <div class="sect-label">// Select Operational Mode</div>
+      <div class="mode-grid">
+
+        <div class="mode-card" onclick="showPage('drafter', document.querySelectorAll('.nav-tab')[1])">
+          <div class="mode-icon-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <span class="mode-name">Drafter</span>
+          <span class="mode-desc">AI-generates a full Malaysian contract from your inputs</span>
+          <span class="mode-badge">Generate</span>
+        </div>
+
+        <div class="mode-card" onclick="showPage('scanner', document.querySelectorAll('.nav-tab')[2])">
+          <div class="mode-icon-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <span class="mode-name">Scanner</span>
+          <span class="mode-desc">AI flags dangerous clauses in Bronze & Red</span>
+          <span class="mode-badge">Analyze</span>
+        </div>
+
+        <div class="mode-card" onclick="showPage('codex', document.querySelectorAll('.nav-tab')[3])">
+          <div class="mode-icon-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <span class="mode-name">Codex</span>
+          <span class="mode-desc">Malaysian Legal Self-Defense, plain English</span>
+          <span class="mode-badge">Learn</span>
+        </div>
+
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin:24px 0 16px;color:var(--text-lo);font-family:var(--font-m);font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;">
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--bronze-dim));"></div>
+        System Status
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,var(--bronze-dim),transparent);"></div>
+      </div>
+
+      <div class="status-row">
+        <div class="status-pill"><span class="pip"></span>No server. 100% local.</div>
+        <div class="status-pill"><span class="pip warn"></span>MY jurisdiction only</div>
+        <div class="status-pill"><span class="pip"></span>localStorage · Privacy-first</div>
+        <div class="status-pill"><span class="pip"></span>Gemini 2.5 Flash</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DRAFTER PAGE ──────────────────────────────────────── -->
+  <div class="page" id="page-drafter">
+    <div class="sect-label">// Mode 01 — Drafter</div>
+    <div class="sect-title">Generate a Pact</div>
+    <p class="sect-sub">Fill in the six fields. Gemini drafts a full, structured contract. Review, then print or copy.</p>
+
+    <div class="glass" style="padding:32px;">
+      <div class="field-row">
+        <div class="field">
+          <label>Party A — Full Name</label>
+          <input id="d_partyA" type="text" placeholder="e.g. Ahmad bin Ibrahim"/>
+        </div>
+        <div class="field">
+          <label>Party A — IC / Passport No.</label>
+          <input id="d_icA" type="text" placeholder="e.g. 900101-14-1234"/>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Party B — Full Name</label>
+          <input id="d_partyB" type="text" placeholder="e.g. Lim Wei Jie"/>
+        </div>
+        <div class="field">
+          <label>Party B — IC / Passport No.</label>
+          <input id="d_icB" type="text" placeholder="e.g. 920215-14-5678"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Project / Subject Matter</label>
+        <input id="d_project" type="text" placeholder="e.g. Website development for ABC Sdn Bhd — 5 pages, delivered in 4 weeks"/>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Contract Value (RM)</label>
+          <input id="d_amount" type="text" placeholder="e.g. RM 2,500"/>
+        </div>
+        <div class="field">
+          <label>Warranty / Guarantee Period</label>
+          <input id="d_warranty" type="text" placeholder="e.g. 30 days bug-fix warranty"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Jurisdiction & Governing Law</label>
+        <input id="d_jurisdiction" type="text" placeholder="e.g. Kuala Lumpur, Malaysia — Contracts Act 1950" value="Kuala Lumpur, Malaysia — Contracts Act 1950"/>
+      </div>
+      <div class="field">
+        <label>Additional clauses or notes (optional)</label>
+        <textarea id="d_notes" placeholder="e.g. Payment 50% upfront, 50% on delivery. No IP transfer until full payment received."></textarea>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button class="btn btn-primary" id="draftBtn" onclick="runDrafter()">
+          <span class="btn-text">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Draft with Gemini
+          </span>
+          <span class="spinner"></span>
+        </button>
+        <button class="btn btn-ghost" onclick="printOutput()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
+        <button class="btn btn-ghost" id="copyDraftBtn" onclick="copyOutput('draftOutput')" style="display:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <div class="output-box" id="draftOutput">
+      <div class="output-header">
+        <span class="output-label">⚖ Generated Pact</span>
+        <span style="font-family:var(--font-m);font-size:.55rem;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;">Malaysia · Educational Use Only</span>
+      </div>
+      <div class="output-content" id="draftOutputContent"></div>
+    </div>
+  </div>
+
+  <!-- ── SCANNER PAGE ──────────────────────────────────────── -->
+  <div class="page" id="page-scanner">
+    <div class="sect-label">// Mode 02 — Scanner</div>
+    <div class="sect-title">Flag the Red Flags</div>
+    <p class="sect-sub">Paste any contract text. Gemini reads it like a lawyer and highlights dangerous clauses — explained in plain English for a 14-year-old.</p>
+
+    <div class="glass" style="padding:32px;">
+      <div class="field">
+        <label>Paste Contract Text</label>
+        <textarea class="scanner-text" id="scannerInput" placeholder="Paste the full contract text here… e.g. 'The Contractor agrees to a non-compete clause covering all of Southeast Asia for a period of 5 years with unlimited liability…'"></textarea>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:4px;">
+        <button class="btn btn-primary" id="scanBtn" onclick="runScanner()">
+          <span class="btn-text">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Scan with Gemini
+          </span>
+          <span class="spinner"></span>
+        </button>
+        <button class="btn btn-ghost" onclick="document.getElementById('scannerInput').value='';document.getElementById('scanOutput').classList.remove('visible');">Clear</button>
+      </div>
+    </div>
+
+    <div class="output-box" id="scanOutput">
+      <div class="output-header">
+        <span class="output-label">🔍 Scan Results</span>
+        <span style="font-family:var(--font-m);font-size:.55rem;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;" id="flagCount"></span>
+      </div>
+      <div class="output-content" id="scanOutputContent"></div>
+    </div>
+  </div>
+
+  <!-- ── CODEX PAGE ────────────────────────────────────────── -->
+  <div class="page" id="page-codex">
+    <div class="sect-label">// Mode 03 — Codex</div>
+    <div class="sect-title">Teen Legal Self-Defense</div>
+    <p class="sect-sub">Ask Gemini anything about Malaysian contract law — explained in plain English, no jargon.</p>
+
+    <div class="glass" style="padding:32px;margin-bottom:20px;">
+      <div class="field">
+        <label>Ask the Codex anything</label>
+        <textarea id="codexInput" placeholder="e.g. Can I sign a contract at 16 in Malaysia? What happens if someone doesn't pay me? What does 'indemnify' mean?"></textarea>
+      </div>
+      <button class="btn btn-primary" id="codexBtn" onclick="runCodex()">
+        <span class="btn-text">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Ask the Codex
+        </span>
+        <span class="spinner"></span>
+      </button>
+      <div class="output-box" id="codexOutput" style="margin-top:24px;">
+        <div class="output-header">
+          <span class="output-label">📜 Codex Answer</span>
+          <span style="font-family:var(--font-m);font-size:.55rem;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;">Educational · Not Legal Advice</span>
+        </div>
+        <div class="output-content" id="codexOutputContent"></div>
+      </div>
+    </div>
+
+    <!-- Static lesson cards -->
+    <div class="sect-label" style="margin-top:8px;">// Core Lessons</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="glass" style="padding:24px;">
+        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 2(a) — Offer & Acceptance</div>
+        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">A contract begins the moment one party makes a clear offer and the other accepts it — no paperwork required. A WhatsApp "yes, deal" can be legally binding. The offer must be communicated; silence is not acceptance.</p>
+      </div>
+      <div class="glass" style="padding:24px;">
+        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 2(d) — Consideration</div>
+        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">Every contract needs something exchanged — money, services, goods, or even a promise. "I'll build your site for RM1,000" — the RM1,000 is the consideration. No consideration = no enforceable contract.</p>
+      </div>
+      <div class="glass" style="padding:24px;">
+        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 11 — Capacity (The Minor Problem)</div>
+        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">Under Malaysian law, contracts with minors (under 18) are <strong style="color:var(--red-flag)">void</strong> — not just voidable, <em>void</em>. This protects you, but also means you can't enforce a contract you sign as a minor. Exception: necessities like food and shelter.</p>
+      </div>
+      <div class="glass" style="padding:24px;">
+        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 24 — Void vs Voidable</div>
+        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;"><strong style="color:var(--text-hi)">Void</strong> = never existed. <strong style="color:var(--text-hi)">Voidable</strong> = valid until you cancel it. Fraud, duress, and misrepresentation make a contract voidable — you have the right to walk away. Know the difference before you sign anything.</p>
+      </div>
+      <div class="glass" style="padding:24px;">
+        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 74 — Breach & Remedies</div>
+        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">If someone breaks the contract, you can claim damages — but only for losses that were reasonably foreseeable. You can't claim RM50,000 if the contract was for RM500. Courts award fair compensation, not revenge money.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-disclaimer">
+      Pact is an educational tool and does not provide legal advice.<br/>
+      For Malaysian use only. Use at your own discretion.<br/>
+      Aura · Veda · <span>Pact</span> — Built in KL.
+    </p>
+  </footer>
+
+</div><!-- /app -->
+
+
+<script>
+/* ══ STATE ══════════════════════════════════════════════════ */
+const GEMINI_MODEL = 'gemini-2.5-flash-preview-05-20';
+const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
+
+let apiKey = localStorage.getItem('pact_gemini_key') || '';
+
+/* ══ BOOT ════════════════════════════════════════════════════ */
+(function boot() {
+  if (apiKey) {
+    showApp();
+  }
+})();
+
+/* ══ KEY MANAGEMENT ═════════════════════════════════════════ */
+function toggleKeyVis() {
+  const inp = document.getElementById('keyInput');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  } else {
+    inp.type = 'password';
+    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
+
+function saveKey() {
+  const raw = document.getElementById('keyInput').value.trim();
+  const err = document.getElementById('keyError');
+  if (!raw) {
+    err.style.display = 'block';
+    err.textContent = 'Please paste your Gemini API key first.';
+    return;
+  }
+  err.style.display = 'none';
+  apiKey = raw;
+  localStorage.setItem('pact_gemini_key', apiKey);
+  showApp();
+}
+
+function showApp() {
+  document.getElementById('keyScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  document.getElementById('appShell').style.flexDirection = 'column';
+  document.getElementById('navPip').classList.remove('no-key');
+}
+
+function resetKey() {
+  if (!confirm('Clear your API key? You\'ll need to re-enter it.')) return;
+  localStorage.removeItem('pact_gemini_key');
+  apiKey = '';
+  document.getElementById('keyInput').value = '';
+  document.getElementById('keyScreen').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+}
+
+/* ══ NAVIGATION ══════════════════════════════════════════════ */
+function showPage(id, tabEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+}
+
+/* ══ GEMINI CORE ═════════════════════════════════════════════ */
+async function callGemini(prompt, key) {
+  key = key || apiKey;
+  const resp = await fetch(API_BASE + '?key=' + encodeURIComponent(key), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }
+    })
+  });
+  if (!resp.ok) throw new Error('API error ' + resp.status);
+  const data = await resp.json();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+function setLoading(btnId, on) {
+  const btn = document.getElementById(btnId);
+  if (on) { btn.classList.add('loading'); btn.disabled = true; }
+  else     { btn.classList.remove('loading'); btn.disabled = false; }
+}
+
+/* ══ DRAFTER ════════════════════════════════════════════════ */
+async function runDrafter() {
+  const A         = document.getElementById('d_partyA').value.trim();
+  const icA       = document.getElementById('d_icA').value.trim();
+  const B         = document.getElementById('d_partyB').value.trim();
+  const icB       = document.getElementById('d_icB').value.trim();
+  const project   = document.getElementById('d_project').value.trim();
+  const amount    = document.getElementById('d_amount').value.trim();
+  const warranty  = document.getElementById('d_warranty').value.trim();
+  const juris     = document.getElementById('d_jurisdiction').value.trim();
+  const notes     = document.getElementById('d_notes').value.trim();
+
+  if (!A || !B || !project || !amount) {
+    alert('Please fill in at least: Party A, Party B, Project, and Amount.');
+    return;
+  }
+
+  setLoading('draftBtn', true);
+
+  const prompt = `You are a Malaysian contract lawyer drafting a professional service agreement.
+
+Draft a clean, formal contract (not a template, an actual filled-in agreement) using the following details:
+
+PARTY A: ${A} (IC/Passport: ${icA || 'Not provided'})
+PARTY B: ${B} (IC/Passport: ${icB || 'Not provided'})
+PROJECT: ${project}
+VALUE: ${amount}
+WARRANTY: ${warranty || 'None specified'}
+JURISDICTION: ${juris}
+ADDITIONAL NOTES: ${notes || 'None'}
+
+Requirements:
+- Cite the Contracts Act 1950 only in the Governing Law clause and where directly relevant
+- Include: Recitals, Scope of Work, Payment Terms, Warranty, IP Ownership, Confidentiality, Termination, Dispute Resolution, Governing Law
+- Use numbered clauses (1.1, 1.2, etc.)
+- Plain English where possible — this must be readable by a non-lawyer
+- End with a signature block for both parties with date lines
+- Do NOT add disclaimers or AI commentary. Return ONLY the contract document.`;
+
+  try {
+    const result = await callGemini(prompt);
+    const box    = document.getElementById('draftOutput');
+    const content= document.getElementById('draftOutputContent');
+    content.textContent = result;
+    box.classList.add('visible');
+    document.getElementById('copyDraftBtn').style.display = 'inline-flex';
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    alert('Gemini API error: ' + e.message + '. Check your key or try again.');
+  } finally {
+    setLoading('draftBtn', false);
+  }
+}
+
+/* ══ SCANNER ════════════════════════════════════════════════ */
+async function runScanner() {
+  const text = document.getElementById('scannerInput').value.trim();
+  if (!text || text.length < 30) {
+    alert('Please paste a contract with enough text to scan.');
+    return;
+  }
+  setLoading('scanBtn', true);
+
+  const prompt = `You are a legal analyst reviewing a contract for a 14-year-old Malaysian student who may not understand legal jargon.
+
+Analyze the following contract text and identify ALL dangerous, unfair, or unusual clauses. For each issue found:
+
+1. Quote the exact problematic phrase or clause (in quotes)
+2. Rate it: 🔴 DANGER (could seriously harm the signer) or 🟡 WARNING (worth questioning)
+3. Explain in plain English (max 2 sentences, like explaining to a smart 14-year-old) WHY it's a problem
+4. Reference the relevant section of the Contracts Act 1950 if applicable
+
+Red flag terms to especially look for: non-compete, perpetual, unlimited liability, indemnify, irrevocable, waive all rights, in perpetuity, sole discretion, automatic renewal, unilateral change, personal guarantee, joint and several liability.
+
+After the clause-by-clause analysis, add a section:
+OVERALL VERDICT: (1 sentence summary — is this contract dangerous, fair, or somewhere in between?)
+
+CONTRACT TEXT:
+---
+${text}
+---
+
+Return ONLY the analysis. No preamble. No AI commentary.`;
+
+  try {
+    const result  = await callGemini(prompt);
+    const box     = document.getElementById('scanOutput');
+    const content = document.getElementById('scanOutputContent');
+
+    // Count flags
+    const dangers  = (result.match(/🔴/g) || []).length;
+    const warnings = (result.match(/🟡/g) || []).length;
+    document.getElementById('flagCount').textContent =
+      dangers + ' Danger' + (dangers !== 1 ? 's' : '') + ' · ' +
+      warnings + ' Warning' + (warnings !== 1 ? 's' : '');
+
+    // Render with color-coded emojis
+    content.innerHTML = result
+      .replace(/🔴/g, '<span style="color:var(--red-flag);">🔴</span>')
+      .replace(/🟡/g, '<span style="color:var(--bronze);">🟡</span>')
+      .replace(/OVERALL VERDICT:/g, '<strong style="color:var(--text-hi);font-size:.9rem;">OVERALL VERDICT:</strong>')
+      .replace(/\n/g, '<br/>');
+
+    box.classList.add('visible');
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    alert('Gemini API error: ' + e.message);
+  } finally {
+    setLoading('scanBtn', false);
+  }
+}
+
+/* ══ CODEX ══════════════════════════════════════════════════ */
+async function runCodex() {
+  const q = document.getElementById('codexInput').value.trim();
+  if (!q) {
+    alert('Ask a question first.');
+    return;
+  }
+  setLoading('codexBtn', true);
+
+  const prompt = `You are Pact Codex — a legal education assistant specialized in Malaysian contract law (Contracts Act 1950).
+
+Answer the following question as if explaining to a smart, curious 14-year-old in Kuala Lumpur who wants to understand their legal rights. Be direct, use plain English, give real examples. Always cite the relevant section of the Contracts Act 1950 if applicable.
+
+Rules:
+- Max 300 words
+- Use plain English — no unnecessary jargon
+- If jargon is unavoidable, define it immediately after
+- Give at least one real-world Malaysian example
+- End with one "Key Takeaway" sentence in bold
+- Do NOT say "great question" or any AI filler phrases
+- This is educational only — remind the user to consult a real lawyer for actual legal matters
+
+QUESTION: ${q}`;
+
+  try {
+    const result  = await callGemini(prompt);
+    const box     = document.getElementById('codexOutput');
+    const content = document.getElementById('codexOutputContent');
+    content.innerHTML = result
+      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text-hi)">$1</strong>')
+      .replace(/\n/g, '<br/>');
+    box.classList.add('visible');
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    alert('Gemini API error: ' + e.message);
+  } finally {
+    setLoading('codexBtn', false);
+  }
+}
+
+/* ══ UTILS ══════════════════════════════════════════════════ */
+function printOutput() {
+  const box = document.getElementById('draftOutput');
+  if (!box.classList.contains('visible')) {
+    alert('Draft a Pact first, then print.');
+    return;
+  }
+  window.print();
+}
+
+async function copyOutput(id) {
+  const content = document.getElementById(id + 'Content').textContent;
+  try {
+    await navigator.clipboard.writeText(content);
+    const btn = document.getElementById('copy' + id.charAt(0).toUpperCase() + id.slice(1) + 'Btn') ||
+                document.querySelector('[onclick*="' + id + '"]');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }
+  } catch(e) {
+    alert('Could not copy. Please select and copy manually.');
+  }
+}
+
+// Allow Enter in key input
+document.getElementById('keyInput')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveKey();
+});
+</script>
+</body>
+</html>
