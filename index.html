@@ -57,10 +57,26 @@
     body.light .mode-card{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08);}
     body.light .mode-card:hover{background:rgba(0,0,0,.08);}
     body.light .glass{background:rgba(240,235,225,0.85);}
+
+    /* ── OFFLINE STATUS ───────────────────────────────────── */
+    #statusBtn.offline {
+      border-color: rgba(224,90,90,0.6);
+      background: rgba(224,90,90,0.12);
+      animation: alarm-pulse 1.2s ease-in-out infinite;
+    }
+    #statusBtn.offline #navKeyLabel {
+      color: var(--red-flag);
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+    @keyframes alarm-pulse {
+      0%,100%{box-shadow:0 0 0 0 rgba(224,90,90,0);}
+      50%{box-shadow:0 0 12px 3px rgba(224,90,90,0.35);}
+    }
     body.light .scan-line{display:none;}
 
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
+    html{scroll-behavior:smooth;font-size:18px;}
 
     body{
       background:var(--bg);
@@ -105,26 +121,27 @@
     /* ── TOP NAV ──────────────────────────────────────────── */
     .topnav{
       display:flex;align-items:center;justify-content:space-between;
-      padding:20px 32px;border-bottom:1px solid rgba(205,127,50,0.1);
+      padding:clamp(16px,2vh,28px) clamp(24px,4vw,80px);
+      border-bottom:1px solid rgba(205,127,50,0.1);
       background:rgba(8,8,8,0.6);backdrop-filter:blur(20px);
       position:sticky;top:0;z-index:50;
     }
     .nav-logo{
-      font-family:var(--font-d);font-size:1.6rem;font-weight:700;letter-spacing:.3em;
+      font-family:var(--font-d);font-size:clamp(1.6rem,2.2vw,2.8rem);font-weight:700;letter-spacing:.3em;
       background:linear-gradient(160deg,#e8a84e 0%,#cd7f32 45%,#8b5a1e 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
     .nav-tabs{display:flex;gap:4px;}
     .nav-tab{
-      font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
-      padding:7px 16px;border-radius:8px;border:1px solid transparent;
+      font-family:var(--font-m);font-size:clamp(.65rem,.8vw,.9rem);letter-spacing:.18em;text-transform:uppercase;
+      padding:clamp(6px,.6vh,10px) clamp(12px,1.2vw,22px);border-radius:8px;border:1px solid transparent;
       background:none;color:var(--text-lo);cursor:pointer;transition:.25s var(--ease);
     }
     .nav-tab:hover{color:var(--text-mid);background:rgba(255,255,255,.04);}
     .nav-tab.active{color:var(--bronze);border-color:var(--bronze-dim);background:var(--bronze-faint);}
     .nav-key-btn{
-      font-family:var(--font-m);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
-      padding:7px 14px;border-radius:8px;border:1px solid var(--bronze-dim);
+      font-family:var(--font-m);font-size:clamp(.65rem,.8vw,.9rem);letter-spacing:.15em;text-transform:uppercase;
+      padding:clamp(6px,.6vh,10px) clamp(10px,1vw,18px);border-radius:8px;border:1px solid var(--bronze-dim);
       background:var(--bronze-faint);color:var(--bronze);cursor:pointer;
       display:flex;align-items:center;gap:6px;transition:.25s var(--ease);
     }
@@ -134,7 +151,7 @@
     @keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
 
     /* ── PAGES ────────────────────────────────────────────── */
-    .page{display:none;flex:1;padding:48px 24px 80px;max-width:860px;margin:0 auto;width:100%;}
+    .page{display:none;flex:1;padding:clamp(32px,4vh,72px) clamp(24px,5vw,80px) clamp(60px,8vh,140px);max-width:min(1400px,96vw);margin:0 auto;width:100%;min-height:0;}
     .page.active{display:block;animation:rise .5s var(--ease) both;}
     @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
@@ -149,19 +166,19 @@
 
     /* ── SECTION LABEL ────────────────────────────────────── */
     .sect-label{
-      font-family:var(--font-m);font-size:.58rem;letter-spacing:.3em;
+      font-family:var(--font-m);font-size:clamp(.65rem,.8vw,.9rem);letter-spacing:.3em;
       color:var(--text-lo);text-transform:uppercase;margin-bottom:20px;
     }
     .sect-title{
-      font-family:var(--font-d);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:600;
+      font-family:var(--font-d);font-size:clamp(2.2rem,4vw,4.5rem);font-weight:600;
       color:var(--text-hi);line-height:1.1;margin-bottom:8px;
     }
-    .sect-sub{font-size:.95rem;color:var(--text-mid);line-height:1.7;margin-bottom:32px;}
+    .sect-sub{font-size:clamp(.85rem,1.1vw,1.15rem);color:var(--text-mid);line-height:1.7;margin-bottom:32px;}
 
     /* ── FORM ELEMENTS ────────────────────────────────────── */
     .field{margin-bottom:20px;}
     .field label{
-      display:block;font-family:var(--font-m);font-size:.6rem;letter-spacing:.2em;
+      display:block;font-family:var(--font-m);font-size:.78rem;letter-spacing:.2em;
       text-transform:uppercase;color:var(--text-lo);margin-bottom:8px;
     }
     .field input,.field textarea,.field select{
@@ -174,7 +191,7 @@
       border-color:var(--bronze-dim);background:rgba(205,127,50,.05);
       box-shadow:0 0 0 3px rgba(205,127,50,.08);
     }
-    .field textarea{min-height:120px;}
+    .field textarea{min-height:160px;}
     .field select option{background:#111;color:var(--text-hi);}
 
     .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -182,8 +199,8 @@
     /* ── BUTTONS ──────────────────────────────────────────── */
     .btn{
       display:inline-flex;align-items:center;gap:8px;
-      font-family:var(--font-m);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
-      padding:13px 28px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+      font-family:var(--font-m);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;
+      padding:14px 30px;border-radius:var(--radius-sm);border:none;cursor:pointer;
       transition:.3s var(--ease);font-weight:700;
     }
     .btn-primary{
@@ -208,7 +225,7 @@
 
     /* ── OUTPUT BOX ───────────────────────────────────────── */
     .output-box{
-      margin-top:28px;padding:28px;border-radius:var(--radius);
+      margin-top:32px;padding:40px;border-radius:var(--radius);
       background:rgba(10,8,5,.8);border:1px solid var(--bronze-dim);
       display:none;
     }
@@ -217,10 +234,10 @@
       display:flex;align-items:center;justify-content:space-between;
       margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(205,127,50,.15);
     }
-    .output-label{font-family:var(--font-m);font-size:.58rem;letter-spacing:.25em;color:var(--bronze);text-transform:uppercase;}
+    .output-label{font-family:var(--font-m);font-size:.75rem;letter-spacing:.25em;color:var(--bronze);text-transform:uppercase;}
     .output-content{
       font-size:.97rem;line-height:1.9;color:var(--text-mid);
-      white-space:pre-wrap;font-family:var(--font-b);font-weight:300;
+      white-space:pre-wrap;font-family:var(--font-b);font-weight:300;word-break:break-word;
     }
     .output-content strong{color:var(--text-hi);font-weight:500;}
 
@@ -258,7 +275,7 @@
     .flag-tag.warn{background:var(--bronze-faint);border:1px solid var(--bronze-dim);color:var(--bronze);}
 
     .scanner-text{
-      width:100%;min-height:200px;background:rgba(255,255,255,.03);
+      width:100%;min-height:260px;background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.07);border-radius:12px;
       padding:16px;color:var(--text-hi);font-family:var(--font-b);font-size:.97rem;
       line-height:1.8;resize:vertical;outline:none;transition:.25s var(--ease);
@@ -271,9 +288,18 @@
     }
 
     /* ── HOME PAGE ────────────────────────────────────────── */
-    .home-header{text-align:center;margin-bottom:56px;}
+    #page-home{
+      display:none;flex-direction:column;justify-content:center;
+      min-height:calc(100vh - clamp(56px,7vh,90px));
+      padding-top:clamp(12px,1.5vh,32px) !important;
+      padding-bottom:clamp(12px,1.5vh,32px) !important;
+    }
+    #page-home.active{display:flex;}
+
+    .home-header{text-align:center;margin-bottom:clamp(20px,2.5vh,44px);}
     .home-wordmark{
-      font-family:var(--font-d);font-weight:700;font-size:clamp(4rem,10vw,7rem);
+      font-family:var(--font-d);font-weight:700;
+      font-size:clamp(4.5rem,11vw,14rem);
       letter-spacing:.35em;text-transform:uppercase;line-height:1;
       background:linear-gradient(160deg,#e8a84e 0%,#cd7f32 40%,#8b5a1e 70%,#cd7f32 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -281,23 +307,24 @@
       animation:rise 1s var(--ease) both;
     }
     .home-tagline{
-      font-family:var(--font-m);font-size:.62rem;letter-spacing:.35em;
+      font-family:var(--font-m);font-size:clamp(.65rem,.9vw,1.05rem);letter-spacing:.35em;
       color:var(--text-lo);text-transform:uppercase;margin-top:12px;
       animation:rise 1s .1s var(--ease) both;
     }
     .version-badge{
       display:inline-flex;align-items:center;gap:6px;font-family:var(--font-m);
-      font-size:.58rem;color:var(--bronze);border:1px solid var(--bronze-dim);
-      padding:4px 12px;border-radius:999px;margin-top:16px;letter-spacing:.15em;
+      font-size:clamp(.65rem,.8vw,.95rem);color:var(--bronze);border:1px solid var(--bronze-dim);
+      padding:clamp(3px,.4vh,7px) clamp(10px,1vw,18px);border-radius:999px;margin-top:16px;letter-spacing:.15em;
       background:var(--bronze-faint);animation:rise 1s .2s var(--ease) both;
     }
 
-    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.2vw,20px);margin-bottom:clamp(14px,2vh,28px);}
     .mode-card{
-      padding:28px 18px 24px;border-radius:var(--radius-sm);
+      padding:clamp(22px,3.2vh,52px) clamp(16px,1.8vw,36px) clamp(18px,2.8vh,44px);
+      border-radius:var(--radius-sm);
       background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
       cursor:pointer;transition:.35s var(--ease);text-align:center;
-      display:flex;flex-direction:column;align-items:center;gap:10px;
+      display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1vh,14px);
       position:relative;overflow:hidden;
     }
     .mode-card::after{
@@ -311,24 +338,28 @@
     }
     .mode-card:hover::after{transform:scaleX(1);}
     .mode-icon-wrap{
-      width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+      width:clamp(48px,5.5vw,88px);height:clamp(48px,5.5vw,88px);
+      border-radius:clamp(10px,1.2vw,20px);display:flex;align-items:center;justify-content:center;
       background:rgba(205,127,50,.1);border:1px solid rgba(205,127,50,.2);color:var(--bronze);
       transition:.35s var(--ease);
     }
+    .mode-icon-wrap svg{width:clamp(16px,2vw,28px);height:clamp(16px,2vw,28px);}
     .mode-card:hover .mode-icon-wrap{background:rgba(205,127,50,.18);box-shadow:0 0 16px rgba(205,127,50,.2);}
-    .mode-name{font-family:var(--font-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-hi);}
-    .mode-desc{font-size:.7rem;color:var(--text-lo);line-height:1.5;}
+    .mode-name{font-family:var(--font-m);font-size:clamp(.75rem,.95vw,1.1rem);letter-spacing:.2em;text-transform:uppercase;color:var(--text-hi);}
+    .mode-desc{font-size:clamp(.8rem,1vw,1.08rem);color:var(--text-lo);line-height:1.5;}
     .mode-badge{
-      font-family:var(--font-m);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;
+      font-family:var(--font-m);font-size:clamp(.48rem,.65vw,.72rem);letter-spacing:.1em;text-transform:uppercase;
       color:var(--bronze);background:var(--bronze-faint);border:1px solid var(--bronze-dim);
       border-radius:999px;padding:2px 9px;
     }
 
     .status-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
     .status-pill{
-      display:flex;align-items:center;gap:6px;font-family:var(--font-m);font-size:.56rem;
+      display:flex;align-items:center;gap:6px;font-family:var(--font-m);
+      font-size:clamp(.5rem,.65vw,.72rem);
       letter-spacing:.12em;color:var(--text-lo);background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:4px 12px;
+      border:1px solid rgba(255,255,255,.06);border-radius:999px;
+      padding:clamp(3px,.4vh,6px) clamp(10px,1vw,16px);
     }
     .pip{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
     .pip.warn{background:var(--bronze);box-shadow:0 0 6px var(--bronze);}
@@ -484,7 +515,7 @@
       <button class="nav-key-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode" style="padding:7px 12px;">
         <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </button>
-      <button class="nav-key-btn" onclick="resetKey()">
+      <button class="nav-key-btn" id="statusBtn" onclick="resetKey()">
         <span class="key-pip" id="navPip"></span>
         <span id="navKeyLabel">Key Active</span>
       </button>
@@ -495,16 +526,24 @@
   <div class="page active" id="page-home">
     <div class="home-header">
       <div class="home-wordmark">PACT</div>
-      <div class="home-tagline">Legal Armor for the Next Gen · Malaysia</div>
-      <div style="display:flex;justify-content:center;margin-top:14px;">
-        <div class="version-badge">
+      <div class="home-tagline"><span id="homeTagline">Malaysian Legal Armor</span> · Know Your Rights</div>
+      <div style="display:flex;justify-content:center;margin-top:14px;position:relative;">
+        <div class="version-badge" id="jurisdictionBadge" onclick="toggleJurisdictionPicker(event)" style="cursor:pointer;user-select:none;">
           <span class="key-pip"></span>
-          v1.0 · Malaysia · Gemini 2.5 Flash
+          v1.0 · <span id="badgeJurisdiction">Malaysia</span> · Gemini 2.5 Flash
+          <svg id="jurisChevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:2px;transition:transform .25s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <!-- Jurisdiction Dropdown -->
+        <div id="jurisdictionPicker" style="display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:100;min-width:260px;">
+          <div style="background:rgba(14,11,7,.97);border:1px solid var(--bronze-dim);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.8);overflow:hidden;backdrop-filter:blur(20px);">
+            <div style="padding:10px 14px 6px;font-family:var(--font-m);font-size:.52rem;letter-spacing:.2em;color:var(--text-lo);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);">Select Jurisdiction</div>
+            <div id="jurisList" style="max-height:320px;overflow-y:auto;padding:6px 0;"></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="glass" style="padding:36px;margin-bottom:16px;">
+    <div class="glass" style="padding:clamp(24px,3.5vh,56px) clamp(24px,3.5vw,56px);margin-bottom:20px;">
       <div class="sect-label">// Select Operational Mode</div>
       <div class="mode-grid">
 
@@ -531,13 +570,13 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           </div>
           <span class="mode-name">Codex</span>
-          <span class="mode-desc">Malaysian Legal Self-Defense, plain English</span>
+          <span class="mode-desc">Malaysian law in plain English — contracts, employment, tenancy & more</span>
           <span class="mode-badge">Learn</span>
         </div>
 
       </div>
 
-      <div style="display:flex;align-items:center;gap:12px;margin:24px 0 16px;color:var(--text-lo);font-family:var(--font-m);font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;">
+      <div style="display:flex;align-items:center;gap:12px;margin:clamp(14px,2vh,24px) 0 16px;color:var(--text-lo);font-family:var(--font-m);font-size:clamp(.5rem,.65vw,.72rem);letter-spacing:.25em;text-transform:uppercase;">
         <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--bronze-dim));"></div>
         System Status
         <div style="flex:1;height:1px;background:linear-gradient(90deg,var(--bronze-dim),transparent);"></div>
@@ -545,7 +584,7 @@
 
       <div class="status-row">
         <div class="status-pill"><span class="pip"></span>No server. 100% local.</div>
-        <div class="status-pill"><span class="pip warn"></span>MY jurisdiction only</div>
+        <div class="status-pill"><span class="pip warn"></span>Malaysia jurisdiction</div>
         <div class="status-pill"><span class="pip"></span>localStorage · Privacy-first</div>
         <div class="status-pill"><span class="pip"></span>Gemini 2.5 Flash</div>
       </div>
@@ -558,7 +597,7 @@
     <div class="sect-title">Generate a Pact</div>
     <p class="sect-sub">Fill in the six fields. Gemini drafts a full, structured contract. Review, then print or copy.</p>
 
-    <div class="glass" style="padding:32px;">
+    <div class="glass" style="padding:44px;">
       <div class="field-row">
         <div class="field">
           <label>Party A — Full Name</label>
@@ -595,7 +634,7 @@
       </div>
       <div class="field">
         <label>Jurisdiction & Governing Law</label>
-        <input id="d_jurisdiction" type="text" placeholder="e.g. Kuala Lumpur, Malaysia — Contracts Act 1950" value="Kuala Lumpur, Malaysia — Contracts Act 1950"/>
+        <input id="d_jurisdiction" type="text" placeholder="e.g. Kuala Lumpur, Malaysia — Contracts Act 1950" id="d_jurisdiction"/>
       </div>
       <div class="field">
         <label>Additional clauses or notes (optional)</label>
@@ -621,22 +660,118 @@
       </div>
     </div>
 
-    <div class="output-box" id="draftOutput">
-      <div class="output-header">
-        <span class="output-label">⚖ Generated Pact</span>
-        <span style="font-family:var(--font-m);font-size:.55rem;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;">Malaysia · Educational Use Only</span>
+    <!-- Document viewer -->
+    <div id="docViewer" style="display:none;margin-top:28px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+        <span style="font-family:var(--font-m);font-size:.52rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;">// Generated Document</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" onclick="window.print()" style="font-size:.65rem;padding:8px 14px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Save PDF
+          </button>
+          <button class="btn btn-ghost" onclick="copyDocText()" style="font-size:.65rem;padding:8px 14px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Text
+          </button>
+        </div>
       </div>
-      <div class="output-content" id="draftOutputContent"></div>
+
+      <div id="docPaper">
+        <div class="doc-letterhead">
+          <div class="doc-logo">PACT</div>
+          <div class="doc-meta">
+            <div class="doc-meta-line" id="doc-date"></div>
+            <div class="doc-meta-line">Malaysia &middot; Drafted by Gemini AI</div>
+            <div class="doc-meta-line" style="color:#c9a96e;font-size:.58rem;">Educational document &middot; Not formal legal advice</div>
+          </div>
+        </div>
+        <div class="doc-rule"></div>
+        <div id="docBody"></div>
+        <div class="doc-rule" style="margin-top:48px;"></div>
+        <div style="text-align:center;font-size:.6rem;color:#999;margin-top:12px;font-family:'Space Mono',monospace;letter-spacing:.1em;">
+          PACT &middot; AI-ASSISTED DOCUMENT &middot; REVIEW WITH A QUALIFIED LAWYER BEFORE SIGNING
+        </div>
+      </div>
     </div>
+
+    <div id="draftOutput" style="display:none;"><div id="draftOutputContent"></div></div>
   </div>
+
+  <style>
+    #docPaper {
+      background: #fff;
+      color: #1a1410;
+      border-radius: 6px;
+      padding: 64px 72px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      max-width: 820px;
+      margin: 0 auto;
+      /* Simulate A4 pages on screen */
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent calc(297mm - 1px),
+        #d0c8b8 calc(297mm - 1px),
+        #d0c8b8 calc(297mm + 3px),
+        transparent calc(297mm + 3px)
+      );
+      background-attachment: local;
+    }
+    .doc-letterhead { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+    .doc-logo { font-family:'Space Mono',monospace; font-size:1.6rem; font-weight:700; letter-spacing:.35em; color:#8B5E2A; }
+    .doc-meta { text-align:right; }
+    .doc-meta-line { font-family:'Lexend',sans-serif; font-size:.62rem; color:#888; letter-spacing:.05em; line-height:1.7; }
+    .doc-rule { border:none; border-top:2px solid #c9a96e; margin:0; }
+    #docBody h1 { font-size:1.45rem; font-weight:700; text-align:center; margin:36px 0 6px; letter-spacing:.04em; color:#1a1410; break-after:avoid; page-break-after:avoid; }
+    #docBody h2 { font-family:'Lexend',sans-serif; font-size:.7rem; font-weight:700; margin:32px 0 8px; text-transform:uppercase; letter-spacing:.14em; color:#8B5E2A; border-bottom:1px solid #e8d5b0; padding-bottom:4px; break-after:avoid; page-break-after:avoid; break-before:auto; page-break-before:auto; }
+    #docBody p { margin:0 0 10px; color:#2a2420; break-inside:avoid; page-break-inside:avoid; }
+    #docBody .clause { display:flex; gap:16px; margin:6px 0; color:#2a2420; break-inside:avoid; page-break-inside:avoid; }
+    #docBody .clause-num { font-family:'Space Mono',monospace; font-size:.72rem; color:#8B5E2A; min-width:40px; padding-top:3px; flex-shrink:0; }
+
+    /* ── SIGNATURE BLOCK ── */
+    #docBody .sig-section { margin-top:56px; break-inside:avoid; page-break-inside:avoid; }
+    #docBody .sig-section-title { font-family:'Lexend',sans-serif; font-size:.58rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#8B5E2A; border-bottom:1px solid #e8d5b0; padding-bottom:4px; margin-bottom:32px; }
+    #docBody .sig-block { display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:0; }
+    #docBody .sig-party { display:flex; flex-direction:column; }
+    #docBody .sig-party-label { font-family:'Lexend',sans-serif; font-size:.56rem; letter-spacing:.15em; color:#aaa; text-transform:uppercase; margin-bottom:48px; }
+    #docBody .sig-line { border-top:2px solid #1a1410; margin-bottom:8px; }
+    #docBody .sig-name { font-weight:700; font-size:1rem; color:#1a1410; margin-bottom:2px; }
+    #docBody .sig-role { font-family:'Lexend',sans-serif; font-size:.58rem; color:#888; margin-bottom:20px; }
+    #docBody .sig-date-line { border-top:1px solid #ccc; padding-top:6px; font-family:'Lexend',sans-serif; font-size:.56rem; color:#aaa; letter-spacing:.08em; text-transform:uppercase; }
+    #docBody .sig-ic { font-family:'Space Mono',monospace; font-size:.58rem; color:#aaa; margin-top:4px; }
+
+    /* ── PRINT & PDF ── */
+    @page { size:A4; margin:20mm 18mm; }
+    @media print {
+      body > * { display:none !important; }
+      #docViewer { display:block !important; margin:0 !important; }
+      #docPaper {
+        display:block !important;
+        box-shadow:none !important;
+        border-radius:0 !important;
+        padding:0 !important;
+        max-width:100% !important;
+      }
+      /* Letterhead only on first page */
+      .doc-letterhead { margin-bottom:16px; }
+      /* Force each major section to consider a page break */
+      #docBody h2 { break-before:auto; page-break-before:auto; }
+      /* Signature always on its own page if content is long */
+      #docBody .sig-section { break-before:auto; page-break-before:auto; }
+      .topnav,.footer,.bg-layer,.scan-line { display:none !important; }
+    }
+  </style>
 
   <!-- ── SCANNER PAGE ──────────────────────────────────────── -->
   <div class="page" id="page-scanner">
     <div class="sect-label">// Mode 02 — Scanner</div>
     <div class="sect-title">Flag the Red Flags</div>
-    <p class="sect-sub">Paste any contract text. Gemini reads it like a lawyer and highlights dangerous clauses — explained in plain English for a 14-year-old.</p>
+    <p class="sect-sub">Paste any contract text. Gemini reads it like a lawyer and highlights dangerous clauses — explained in plain English.</p>
 
-    <div class="glass" style="padding:32px;">
+    <div class="glass" style="padding:44px;">
       <div class="field">
         <label>Paste Contract Text</label>
         <textarea class="scanner-text" id="scannerInput" placeholder="Paste the full contract text here… e.g. 'The Contractor agrees to a non-compete clause covering all of Southeast Asia for a period of 5 years with unlimited liability…'"></textarea>
@@ -666,13 +801,13 @@
   <!-- ── CODEX PAGE ────────────────────────────────────────── -->
   <div class="page" id="page-codex">
     <div class="sect-label">// Mode 03 — Codex</div>
-    <div class="sect-title">Teen Legal Self-Defense</div>
-    <p class="sect-sub">Ask Gemini anything about Malaysian contract law — explained in plain English, no jargon.</p>
+    <div class="sect-title">Legal Self-Defense</div>
+    <p class="sect-sub">Ask Gemini anything about Malaysian law — contracts, employment, consumer rights, tenancy, and more. Plain English, no jargon.</p>
 
     <div class="glass" style="padding:32px;margin-bottom:20px;">
       <div class="field">
         <label>Ask the Codex anything</label>
-        <textarea id="codexInput" placeholder="e.g. Can I sign a contract at 16 in Malaysia? What happens if someone doesn't pay me? What does 'indemnify' mean?"></textarea>
+        <textarea id="codexInput" placeholder="e.g. Can my boss fire me without notice? What happens if someone doesn't pay me? My landlord won't return my deposit — what can I do?"></textarea>
       </div>
       <button class="btn btn-primary" id="codexBtn" onclick="runCodex()">
         <span class="btn-text">
@@ -690,31 +825,129 @@
       </div>
     </div>
 
-    <!-- Static lesson cards -->
+    <!-- Tabbed lesson browser -->
     <div class="sect-label" style="margin-top:8px;">// Core Lessons</div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="glass" style="padding:24px;">
-        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 2(a) — Offer & Acceptance</div>
-        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">A contract begins the moment one party makes a clear offer and the other accepts it — no paperwork required. A WhatsApp "yes, deal" can be legally binding. The offer must be communicated; silence is not acceptance.</p>
+
+    <style>
+      .lex-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+      .lex-tab{font-family:var(--font-m);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:1px solid var(--bronze-dim);background:transparent;color:var(--text-mid);cursor:pointer;transition:all .2s var(--ease);}
+      .lex-tab:hover{border-color:var(--bronze);color:var(--bronze);}
+      .lex-tab.active{background:var(--bronze-dim);border-color:var(--bronze);color:var(--bronze);}
+      .lex-panel{display:none;flex-direction:column;gap:10px;}
+      .lex-panel.active{display:flex;}
+      .lex-card{border:1px solid transparent;border-radius:var(--radius-sm);overflow:hidden;background:var(--glass-bg);transition:border-color .2s var(--ease);}
+      .lex-card:hover{border-color:var(--bronze-dim);}
+      .lex-card-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;gap:12px;}
+      .lex-card-title{font-family:var(--font-m);font-size:.56rem;letter-spacing:.18em;color:var(--bronze);text-transform:uppercase;flex:1;}
+      .lex-chevron{color:var(--text-lo);font-size:.7rem;transition:transform .25s var(--ease);flex-shrink:0;}
+      .lex-card.open .lex-chevron{transform:rotate(180deg);}
+      .lex-card-body{max-height:0;overflow:hidden;transition:max-height .35s var(--ease);}
+      .lex-card.open .lex-card-body{max-height:400px;}
+      .lex-card-body p{padding:0 20px 18px;font-size:.78rem;color:var(--text-mid);line-height:1.9;}
+    </style>
+
+    <div class="lex-tabs">
+      <button class="lex-tab active" onclick="switchLex(this,'lex-contracts')">Contracts 1950</button>
+      <button class="lex-tab" onclick="switchLex(this,'lex-employment')">Employment 1955</button>
+      <button class="lex-tab" onclick="switchLex(this,'lex-consumer')">Consumer 1999</button>
+      <button class="lex-tab" onclick="switchLex(this,'lex-tenancy')">Tenancy</button>
+      <button class="lex-tab" onclick="switchLex(this,'lex-pdpa')">PDPA 2010</button>
+    </div>
+
+    <div id="lex-contracts" class="lex-panel active">
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">§ 2(a) — Offer &amp; Acceptance</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>A contract begins the moment one party makes a clear offer and the other accepts — no paperwork required. A WhatsApp "yes, deal" can be legally binding. The offer must be communicated; silence is not acceptance.</p></div>
       </div>
-      <div class="glass" style="padding:24px;">
-        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 2(d) — Consideration</div>
-        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">Every contract needs something exchanged — money, services, goods, or even a promise. "I'll build your site for RM1,000" — the RM1,000 is the consideration. No consideration = no enforceable contract.</p>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">§ 2(d) — Consideration</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Every contract needs something exchanged — money, services, goods, or even a promise. "I'll build your site for RM1,000" — the RM1,000 is the consideration. No consideration = no enforceable contract.</p></div>
       </div>
-      <div class="glass" style="padding:24px;">
-        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 11 — Capacity (The Minor Problem)</div>
-        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">Under Malaysian law, contracts with minors (under 18) are <strong style="color:var(--red-flag)">void</strong> — not just voidable, <em>void</em>. This protects you, but also means you can't enforce a contract you sign as a minor. Exception: necessities like food and shelter.</p>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">§ 11 — Capacity</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Under Malaysian law, contracts with minors (under 18) are <strong style="color:var(--red-flag)">void</strong> — not voidable, <em>void</em>. The law treats them as if they never existed. Exception: necessities like food and shelter can still bind a minor.</p></div>
       </div>
-      <div class="glass" style="padding:24px;">
-        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 24 — Void vs Voidable</div>
-        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;"><strong style="color:var(--text-hi)">Void</strong> = never existed. <strong style="color:var(--text-hi)">Voidable</strong> = valid until you cancel it. Fraud, duress, and misrepresentation make a contract voidable — you have the right to walk away. Know the difference before you sign anything.</p>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">§ 24 — Void vs Voidable</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p><strong style="color:var(--text-hi)">Void</strong> = never legally existed. <strong style="color:var(--text-hi)">Voidable</strong> = valid until you cancel it. Fraud, duress, and misrepresentation make a contract voidable — you have the right to walk away.</p></div>
       </div>
-      <div class="glass" style="padding:24px;">
-        <div style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.2em;color:var(--bronze);text-transform:uppercase;margin-bottom:8px;">§ Section 74 — Breach & Remedies</div>
-        <p style="font-size:.8rem;color:var(--text-mid);line-height:1.8;">If someone breaks the contract, you can claim damages — but only for losses that were reasonably foreseeable. You can't claim RM50,000 if the contract was for RM500. Courts award fair compensation, not revenge money.</p>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">§ 74 — Breach &amp; Remedies</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>If someone breaks a contract, you can claim damages — but only for losses that were reasonably foreseeable. You can't claim RM50,000 if the contract was for RM500. Courts award fair compensation, not revenge money.</p></div>
       </div>
     </div>
+
+    <div id="lex-employment" class="lex-panel">
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Notice Period — Termination</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Employers must give proper notice before termination: 4 weeks if you've worked under 2 years, 6 weeks for 2–5 years, 8 weeks for 5+ years. Firing without notice requires payment in lieu. Immediate dismissal is only lawful for misconduct after a due inquiry.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Unpaid Wages &amp; Overtime</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Wages must be paid by the 7th of the following month. Overtime is capped at 104 hours/month and paid at 1.5× rate (weekdays), 2× (rest days), 3× (public holidays). File at JTKSM if your employer defaults.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Annual &amp; Maternity Leave</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Minimum annual leave: 8 days (under 2 years), 12 days (2–5 years), 16 days (5+ years). Maternity leave is 98 consecutive days. These are legal floors — your contract can only improve on them, never reduce them.</p></div>
+      </div>
+    </div>
+
+    <div id="lex-consumer" class="lex-panel">
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Faulty Goods &amp; Refunds</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Goods must be of acceptable quality, fit for purpose, and match their description. If they fail, you're entitled to a repair, replacement, or refund. "No refund" signs have no legal force if the product is genuinely defective — the CPA overrides them.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Unfair Contract Terms</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Under Part IIIA, terms that are oppressive, unconscionable, or heavily one-sided can be declared void by a court. Just because you signed something doesn't mean every clause is enforceable.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Tribunal for Consumer Claims (TTPM)</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Disputes up to RM50,000 can be filed at the TTPM — no lawyer needed, low fees, faster than court. This is your first stop for defective goods, service failures, and unfair charges by businesses.</p></div>
+      </div>
+    </div>
+
+    <div id="lex-tenancy" class="lex-panel">
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Security Deposit</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Landlords typically hold 2 months deposit + 0.5 months utility deposit. Deductions are only valid for actual damage beyond fair wear and tear, or unpaid rent. Return must happen within a reasonable period after vacating — document everything with photos on move-out day.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Eviction &amp; Lockouts</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>A landlord cannot forcibly evict you or change your locks without a court order — that's illegal. Typical termination notice is 1–3 months per the tenancy agreement. Disputes go to the Tribunal for Consumer Claims or civil court.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">No Dedicated Tenancy Act (Yet)</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Malaysia still lacks a dedicated Residential Tenancy Act, so disputes fall under general contract law and common law. This means your tenancy agreement is extremely important — read every clause before signing.</p></div>
+      </div>
+    </div>
+
+    <div id="lex-pdpa" class="lex-panel">
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Your Data Rights</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>Companies must get your consent before collecting personal data, state the purpose, and keep it secure. You have the right to access your own data and correct inaccuracies. Report violations to the Personal Data Protection Commissioner.</p></div>
+      </div>
+      <div class="lex-card" onclick="toggleLex(this)">
+        <div class="lex-card-head"><span class="lex-card-title">Who It Covers</span><span class="lex-chevron">▾</span></div>
+        <div class="lex-card-body"><p>The PDPA applies to commercial transactions only — government bodies are exempt. It covers data processors and data users (companies that collect and process your data). Misuse or data breaches can be reported and prosecuted.</p></div>
+      </div>
+    </div>
+
   </div>
+
+  <script>
+    function switchLex(btn, panelId) {
+      document.querySelectorAll('.lex-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.lex-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(panelId).classList.add('active');
+    }
+    function toggleLex(card) {
+      const isOpen = card.classList.contains('open');
+      card.closest('.lex-panel').querySelectorAll('.lex-card').forEach(c => c.classList.remove('open'));
+      if (!isOpen) card.classList.add('open');
+    }
+  </script>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -827,19 +1060,31 @@ function showPage(id, tabEl) {
 }
 
 /* ══ GEMINI CORE ═════════════════════════════════════════════ */
-async function callGemini(prompt, key) {
+async function callGemini(prompt, key, retries = 3) {
   key = key || apiKey;
-  const resp = await fetch(API_BASE + '?key=' + encodeURIComponent(key), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }
-    })
-  });
-  if (!resp.ok) throw new Error(String(resp.status));
-  const data = await resp.json();
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const resp = await fetch(API_BASE + '?key=' + encodeURIComponent(key), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }
+      })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    }
+    const status = resp.status;
+    // Retry on 503 (overloaded) or 429 (rate limit)
+    if ((status === 503 || status === 429) && attempt < retries) {
+      const wait = attempt * 3000; // 3s, 6s, 9s
+      await new Promise(r => setTimeout(r, wait));
+      continue;
+    }
+    setOfflineMode();
+    throw new Error(String(status));
+  }
 }
 
 function setLoading(btnId, on) {
@@ -880,7 +1125,7 @@ JURISDICTION: ${juris}
 ADDITIONAL NOTES: ${notes || 'None'}
 
 Requirements:
-- Cite the Contracts Act 1950 only in the Governing Law clause and where directly relevant
+- Cite Malaysian law only where directly relevant (Contracts Act 1950, Employment Act 1955, CPA 1999, etc.)
 - Include: Recitals, Scope of Work, Payment Terms, Warranty, IP Ownership, Confidentiality, Termination, Dispute Resolution, Governing Law
 - Use numbered clauses (1.1, 1.2, etc.)
 - Plain English where possible — this must be readable by a non-lawyer
@@ -889,17 +1134,184 @@ Requirements:
 
   try {
     const result = await callGemini(prompt);
-    const box    = document.getElementById('draftOutput');
-    const content= document.getElementById('draftOutputContent');
-    content.textContent = result;
-    box.classList.add('visible');
-    document.getElementById('copyDraftBtn').style.display = 'inline-flex';
-    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setOnlineMode();
+    renderContract(result);
   } catch(e) {
-    alert('Gemini API error: ' + e.message + '. Check your key or try again.');
+    renderContract(offlineDraft(A, icA, B, icB, project, amount, warranty, juris, notes));
   } finally {
     setLoading('draftBtn', false);
   }
+}
+
+function renderContract(text) {
+  // Set date
+  document.getElementById('doc-date').textContent = new Date().toLocaleDateString('en-MY', {day:'numeric',month:'long',year:'numeric'});
+
+  const body = document.getElementById('docBody');
+  body.innerHTML = '';
+
+  // Strip markdown bold from a string
+  function stripMd(s) { return s.replace(/\*\*/g,'').replace(/^#+\s*/,'').trim(); }
+  // Convert inline markdown to HTML
+  function inlineHtml(s) {
+    return s
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g,'<em>$1</em>');
+  }
+
+  // Pull party names & IC from the drafter fields for the sig block
+  const partyA   = document.getElementById('d_partyA')?.value.trim()  || 'Party A';
+  const partyB   = document.getElementById('d_partyB')?.value.trim()  || 'Party B';
+  const icA      = document.getElementById('d_icA')?.value.trim()     || '';
+  const icB      = document.getElementById('d_icB')?.value.trim()     || '';
+
+  // Strip out any Gemini-generated signature section so we inject our own
+  const sigCutRE = /\n(?:IN WITNESS|SIGNED BY|SIGNATURE|EXECUTED BY|PARTIES HAVE SIGNED|AS WITNESS).*/is;
+  const cleanText = text.replace(sigCutRE, '');
+
+  const lines = cleanText.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const line = raw.trim();
+
+    // Blank line
+    if (!line) continue;
+
+    // ── MARKDOWN HEADING (## or # or **HEADING**) ────────────
+    const mdH = line.match(/^(#{1,3})\s+(.+)/);
+    if (mdH) {
+      const level = mdH[1].length;
+      const el = document.createElement(level === 1 ? 'h1' : 'h2');
+      el.textContent = stripMd(mdH[2]);
+      body.appendChild(el); continue;
+    }
+
+    // ── BOLD-ONLY LINE used as heading e.g. **SCOPE OF WORK** ─
+    const boldHeading = line.match(/^\*\*([^*]+)\*\*\s*:?\s*$/);
+    if (boldHeading) {
+      const el = document.createElement('h2');
+      el.textContent = boldHeading[1].trim();
+      body.appendChild(el); continue;
+    }
+
+    // ── ALL-CAPS SECTION HEADING ─────────────────────────────
+    const stripped = line.replace(/^\d+\.\s+/, '').replace(/[^A-Za-z]/g,'');
+    const isAllCaps = stripped.length >= 4 && stripped === stripped.toUpperCase();
+    const isKeyword = /^(BETWEEN|AND|WHEREAS|NOW,?\s*THEREFORE|RECITALS?|SCHEDULE|ANNEXURE|PARTIES|PREAMBLE)\s*:?$/i.test(line);
+
+    if (isAllCaps && !line.match(/^\d+\.\d+/) && line.length < 80) {
+      const el = document.createElement('h2');
+      el.textContent = line.replace(/^\d+\.\s*/,'').replace(/:$/,'');
+      body.appendChild(el); continue;
+    }
+
+    if (isKeyword) {
+      const el = document.createElement('h2');
+      el.textContent = line.replace(/:$/,'');
+      body.appendChild(el); continue;
+    }
+
+    // ── NUMBERED CLAUSE e.g. "1.1 The Client shall…" ─────────
+    const cMatch = line.match(/^(\d+\.\d+(?:\.\d+)?)\s+(.+)/);
+    if (cMatch) {
+      const div = document.createElement('div'); div.className = 'clause';
+      const num = document.createElement('span'); num.className = 'clause-num'; num.textContent = cMatch[1];
+      const txt = document.createElement('span'); txt.innerHTML = inlineHtml(cMatch[2]);
+      div.appendChild(num); div.appendChild(txt);
+      body.appendChild(div); continue;
+    }
+
+    // ── LETTERED SUB-CLAUSE e.g. "(a) A primary logo design" ─
+    const subMatch = line.match(/^\(([a-z])\)\s+(.+)/i);
+    if (subMatch) {
+      const div = document.createElement('div'); div.className = 'clause'; div.style.paddingLeft = '40px';
+      const num = document.createElement('span'); num.className = 'clause-num'; num.style.minWidth='28px'; num.textContent = '(' + subMatch[1] + ')';
+      const txt = document.createElement('span'); txt.innerHTML = inlineHtml(subMatch[2]);
+      div.appendChild(num); div.appendChild(txt);
+      body.appendChild(div); continue;
+    }
+
+    // ── ROMAN NUMERAL SUB-CLAUSE e.g. "(i) something" ────────
+    const romMatch = line.match(/^\((i{1,3}|iv|vi{0,3}|ix|x)\)\s+(.+)/i);
+    if (romMatch) {
+      const div = document.createElement('div'); div.className = 'clause'; div.style.paddingLeft = '68px';
+      const num = document.createElement('span'); num.className = 'clause-num'; num.style.minWidth='28px'; num.textContent = '(' + romMatch[1] + ')';
+      const txt = document.createElement('span'); txt.innerHTML = inlineHtml(romMatch[2]);
+      div.appendChild(num); div.appendChild(txt);
+      body.appendChild(div); continue;
+    }
+
+    // ── PLAIN PARAGRAPH ───────────────────────────────────────
+    const p = document.createElement('p');
+    p.innerHTML = inlineHtml(line);
+    body.appendChild(p);
+  }
+
+  // ── ALWAYS INJECT A CLEAN SIGNATURE BLOCK ────────────────────
+  const sigSection = document.createElement('div');
+  sigSection.className = 'sig-section';
+
+  const sigTitle = document.createElement('div');
+  sigTitle.className = 'sig-section-title';
+  sigTitle.textContent = 'Executed by the Parties';
+  sigSection.appendChild(sigTitle);
+
+  const sigBlock = document.createElement('div');
+  sigBlock.className = 'sig-block';
+
+  function makeSigParty(name, ic, role) {
+    const party = document.createElement('div');
+    party.className = 'sig-party';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'sig-party-label';
+    lbl.textContent = role;
+    party.appendChild(lbl);
+
+    const line = document.createElement('div');
+    line.className = 'sig-line';
+    party.appendChild(line);
+
+    const nm = document.createElement('div');
+    nm.className = 'sig-name';
+    nm.textContent = name;
+    party.appendChild(nm);
+
+    if (ic) {
+      const icEl = document.createElement('div');
+      icEl.className = 'sig-ic';
+      icEl.textContent = 'IC / Reg No: ' + ic;
+      party.appendChild(icEl);
+    }
+
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'sig-date-line';
+    dateDiv.textContent = 'Date: ___________________________';
+    party.appendChild(dateDiv);
+
+    return party;
+  }
+
+  sigBlock.appendChild(makeSigParty(partyA, icA, 'Service Provider · Party A'));
+  sigBlock.appendChild(makeSigParty(partyB, icB, 'Client · Party B'));
+  sigSection.appendChild(sigBlock);
+  body.appendChild(sigSection);
+
+  const viewer = document.getElementById('docViewer');
+  viewer.style.display = 'block';
+  viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Keep raw text for copy
+  document.getElementById('draftOutputContent').textContent = text;
+}
+
+function copyDocText() {
+  const text = document.getElementById('draftOutputContent').textContent;
+  navigator.clipboard.writeText(text).catch(() => {});
+  const btn = event.target.closest('button');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '✓ Copied';
+  setTimeout(() => btn.innerHTML = orig, 1800);
 }
 
 /* ══ SCANNER ════════════════════════════════════════════════ */
@@ -911,14 +1323,14 @@ async function runScanner() {
   }
   setLoading('scanBtn', true);
 
-  const prompt = `You are a legal analyst reviewing a contract for a 14-year-old Malaysian student who may not understand legal jargon.
+  const prompt = `You are a legal analyst reviewing a contract for a Malaysian user who may not be familiar with legal jargon.
 
 Analyze the following contract text and identify ALL dangerous, unfair, or unusual clauses. For each issue found:
 
 1. Quote the exact problematic phrase or clause (in quotes)
 2. Rate it: 🔴 DANGER (could seriously harm the signer) or 🟡 WARNING (worth questioning)
-3. Explain in plain English (max 2 sentences, like explaining to a smart 14-year-old) WHY it's a problem
-4. Reference the relevant section of the Contracts Act 1950 if applicable
+3. Explain in plain English (max 2 sentences) WHY it's a problem
+4. Reference the relevant Malaysian Act and section if applicable (Contracts Act 1950, Employment Act 1955, Consumer Protection Act 1999, etc.)
 
 Red flag terms to especially look for: non-compete, perpetual, unlimited liability, indemnify, irrevocable, waive all rights, in perpetuity, sole discretion, automatic renewal, unilateral change, personal guarantee, joint and several liability.
 
@@ -934,27 +1346,24 @@ Return ONLY the analysis. No preamble. No AI commentary.`;
 
   try {
     const result  = await callGemini(prompt);
+    setOnlineMode();
     const box     = document.getElementById('scanOutput');
     const content = document.getElementById('scanOutputContent');
-
-    // Count flags
     const dangers  = (result.match(/🔴/g) || []).length;
     const warnings = (result.match(/🟡/g) || []).length;
     document.getElementById('flagCount').textContent =
       dangers + ' Danger' + (dangers !== 1 ? 's' : '') + ' · ' +
       warnings + ' Warning' + (warnings !== 1 ? 's' : '');
-
-    // Render with color-coded emojis
-    content.innerHTML = result
-      .replace(/🔴/g, '<span style="color:var(--red-flag);">🔴</span>')
-      .replace(/🟡/g, '<span style="color:var(--bronze);">🟡</span>')
-      .replace(/OVERALL VERDICT:/g, '<strong style="color:var(--text-hi);font-size:.9rem;">OVERALL VERDICT:</strong>')
-      .replace(/\n/g, '<br/>');
-
+    content.innerHTML = formatOutput(result);
     box.classList.add('visible');
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(e) {
-    alert('Gemini API error: ' + e.message);
+    const result  = offlineScan(text);
+    const box     = document.getElementById('scanOutput');
+    const content = document.getElementById('scanOutputContent');
+    content.innerHTML = formatOutput(result);
+    box.classList.add('visible');
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } finally {
     setLoading('scanBtn', false);
   }
@@ -969,35 +1378,209 @@ async function runCodex() {
   }
   setLoading('codexBtn', true);
 
-  const prompt = `You are Pact Codex — a legal education assistant specialized in Malaysian contract law (Contracts Act 1950).
+  const prompt = `You are Pact Codex — a Malaysian legal education assistant covering: Contracts Act 1950, Employment Act 1955, Consumer Protection Act 1999, Personal Data Protection Act 2010, Hire-Purchase Act 1967, and residential tenancy law.
 
-Answer the following question as if explaining to a smart, curious 14-year-old in Kuala Lumpur who wants to understand their legal rights. Be direct, use plain English, give real examples. Always cite the relevant section of the Contracts Act 1950 if applicable.
+Answer the following question clearly and directly. Be direct, use plain English, give real examples relevant to Malaysia. Cite the relevant Act and section where applicable.
 
 Rules:
-- Max 300 words
-- Use plain English — no unnecessary jargon
-- If jargon is unavoidable, define it immediately after
+- Max 350 words
+- Plain English — no unnecessary jargon; if jargon is unavoidable, define it immediately
 - Give at least one real-world Malaysian example
 - End with one "Key Takeaway" sentence in bold
 - Do NOT say "great question" or any AI filler phrases
-- This is educational only — remind the user to consult a real lawyer for actual legal matters
+- This is educational only — remind the user to consult a qualified lawyer for actual legal matters
 
 QUESTION: ${q}`;
 
   try {
     const result  = await callGemini(prompt);
+    setOnlineMode();
     const box     = document.getElementById('codexOutput');
     const content = document.getElementById('codexOutputContent');
-    content.innerHTML = result
-      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text-hi)">$1</strong>')
-      .replace(/\n/g, '<br/>');
+    content.innerHTML = formatOutput(result);
     box.classList.add('visible');
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(e) {
-    alert('Gemini API error: ' + e.message);
+    const result  = offlineCodex(q);
+    const box     = document.getElementById('codexOutput');
+    const content = document.getElementById('codexOutputContent');
+    content.innerHTML = formatOutput(result);
+    box.classList.add('visible');
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } finally {
     setLoading('codexBtn', false);
   }
+}
+
+/* ══ SHARED OUTPUT FORMATTER ════════════════════════════════ */
+function formatOutput(text) {
+  return text
+    // Emojis and verdict label
+    .replace(/🔴/g, '<span style="color:var(--red-flag);">🔴</span>')
+    .replace(/🟡/g, '<span style="color:var(--bronze);">🟡</span>')
+    .replace(/🟢/g, '<span style="color:var(--green);">🟢</span>')
+    .replace(/✅/g, '<span style="color:var(--green);">✅</span>')
+    .replace(/OVERALL VERDICT:/g, '<br/><strong style="color:var(--text-hi);font-size:.9rem;">OVERALL VERDICT:</strong>')
+    // Markdown headings → styled lines
+    .replace(/^#{1,3}\s+(.+)$/gm, '<strong style="display:block;color:var(--text-hi);margin-top:12px;">$1</strong>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text-hi);">$1</strong>')
+    // Italic
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Newlines
+    .replace(/\n/g, '<br/>');
+}
+
+
+/* ══ OFFLINE STATUS ══════════════════════════════════════════ */
+let isOffline = false;
+
+function setOfflineMode() {
+  isOffline = true;
+  const btn = document.getElementById('statusBtn');
+  const pip = document.getElementById('navPip');
+  const label = document.getElementById('navKeyLabel');
+  if (btn) btn.classList.add('offline');
+  if (pip) pip.classList.add('no-key');
+  if (label) label.textContent = '⚠ OFFLINE MODE';
+}
+
+function setOnlineMode() {
+  isOffline = false;
+  const btn = document.getElementById('statusBtn');
+  const pip = document.getElementById('navPip');
+  const label = document.getElementById('navKeyLabel');
+  if (btn) btn.classList.remove('offline');
+  if (pip) pip.classList.remove('no-key');
+  if (label) label.textContent = 'Key Active';
+}
+
+/* ══ OFFLINE DRAFTER ═════════════════════════════════════════ */
+function offlineDraft(A, icA, B, icB, project, amount, warranty, juris, notes) {
+  const today = new Date().toLocaleDateString('en-MY', {day:'numeric',month:'long',year:'numeric'});
+  return `PROFESSIONAL SERVICE AGREEMENT
+[OFFLINE TEMPLATE — AI unavailable. Review and edit before use.]
+
+This Agreement is made on ${today}
+
+BETWEEN:
+  ${A}${icA ? ' (IC/Passport: ' + icA + ')' : ''} ("Party A / Client")
+AND:
+  ${B}${icB ? ' (IC/Passport: ' + icB + ')' : ''} ("Party B / Service Provider")
+
+1. SCOPE OF WORK
+   Party B agrees to provide the following services to Party A:
+   ${project}
+
+2. PAYMENT
+   2.1 Total value: ${amount}
+   2.2 Payment terms: As agreed between the Parties.
+   ${notes ? '2.3 Additional notes: ' + notes : ''}
+
+3. WARRANTY
+   ${warranty || 'No warranty period specified. Parties to agree separately.'}
+
+4. INTELLECTUAL PROPERTY
+   All work produced under this Agreement belongs to Party A upon full payment.
+
+5. CONFIDENTIALITY
+   Both Parties agree to keep all project information confidential.
+
+6. TERMINATION
+   Either Party may terminate this Agreement with 14 days written notice.
+
+7. GOVERNING LAW
+   This Agreement is governed by the laws of Malaysia, including the Contracts Act 1950.
+   Jurisdiction: ${juris || 'Malaysia'}
+
+8. DISPUTE RESOLUTION
+   Disputes shall first be resolved through negotiation, then mediation if necessary.
+
+SIGNATURES:
+
+Party A: _______________________  Date: ___________
+  ${A}
+
+Party B: _______________________  Date: ___________
+  ${B}
+
+---
+⚠ This is an offline template. For a full AI-drafted contract, restore your Gemini connection.`;
+}
+
+/* ══ OFFLINE SCANNER ═════════════════════════════════════════ */
+function offlineScan(text) {
+  const lower = text.toLowerCase();
+  const flags = [
+    { term: 'non-compete',          level: '🔴', reason: 'Restricts where you can work after this contract ends. Could seriously limit your career options.' },
+    { term: 'perpetual',            level: '🔴', reason: 'Means "forever." Any obligation lasting forever is extremely unusual and likely unfair.' },
+    { term: 'in perpetuity',        level: '🔴', reason: 'Same as perpetual — a commitment with no end date. Almost never acceptable.' },
+    { term: 'unlimited liability',  level: '🔴', reason: 'You could be held responsible for any amount of loss, no matter how large. Huge risk.' },
+    { term: 'indemnify',            level: '🔴', reason: 'You agree to cover the other party\'s losses. Check exactly what losses are included.' },
+    { term: 'irrevocable',          level: '🔴', reason: 'Cannot be undone. Once you agree, there\'s no taking it back under any circumstances.' },
+    { term: 'waive all rights',     level: '🔴', reason: 'You give up legal protections you\'d normally have. Extremely dangerous clause.' },
+    { term: 'personal guarantee',   level: '🔴', reason: 'You\'re personally responsible, not just a company. Your personal assets could be at risk.' },
+    { term: 'sole discretion',      level: '🟡', reason: 'The other party can make decisions without consulting you. Watch what powers this applies to.' },
+    { term: 'automatic renewal',    level: '🟡', reason: 'Contract renews itself unless you actively cancel. Easy to get stuck in.' },
+    { term: 'unilateral',           level: '🟡', reason: 'One party can change the terms without your agreement. Check what they can change.' },
+    { term: 'joint and several',    level: '🟡', reason: 'If others default, you could be liable for their share too.' },
+    { term: 'non-refundable',       level: '🟡', reason: 'No refund under any circumstances, even if the other party fails to deliver.' },
+    { term: 'as is',                level: '🟡', reason: 'No guarantees about the quality or condition of what you\'re receiving.' },
+    { term: 'force majeure',        level: '🟡', reason: 'Check what events let the other party off the hook — lists can be very broad.' },
+  ];
+
+  let found = [];
+  flags.forEach(f => {
+    if (lower.includes(f.term)) {
+      found.push({ ...f });
+    }
+  });
+
+  const dangers  = found.filter(f => f.level === '🔴').length;
+  const warnings = found.filter(f => f.level === '🟡').length;
+
+  document.getElementById('flagCount').textContent =
+    dangers + ' Danger' + (dangers !== 1 ? 's' : '') + ' · ' +
+    warnings + ' Warning' + (warnings !== 1 ? 's' : '') + ' (Offline Scan)';
+
+  if (found.length === 0) {
+    return '✅ No common red flag terms detected in offline scan.\n\nNote: Offline mode only checks for known keywords. For full AI analysis, restore your Gemini connection.\n\nOVERALL VERDICT: No obvious red flags found, but this is a basic keyword scan only.';
+  }
+
+  let output = '⚠ OFFLINE SCAN — Keyword detection only. For full AI analysis, restore Gemini.\n\n';
+  found.forEach(f => {
+    output += f.level + ' "' + f.term + '"\n';
+    output += '   ' + f.reason + '\n\n';
+  });
+  output += 'OVERALL VERDICT: ' + dangers + ' danger clause(s) and ' + warnings + ' warning(s) detected. Review carefully before signing.';
+  return output;
+}
+
+/* ══ OFFLINE CODEX ══════════════════════════════════════════ */
+const CODEX_OFFLINE = [
+  { keys: ['minor','age','contract','sign'], answer: 'Under Section 11 of the Contracts Act 1950, only people who are 18+ can sign a legally binding contract in Malaysia. Contracts signed by minors are generally void — meaning the law treats them as if they never existed. Exception: contracts for necessities (food, clothing, shelter) can still bind a minor.\n\n**Key Takeaway:** If you\'re under 18, contracts you sign are usually not legally enforceable against you.' },
+  { keys: ['non-compete','compete','restriction'], answer: 'A non-compete clause tries to stop you from working for competitors or starting a competing business after a contract ends. Under Section 28 of the Contracts Act 1950, agreements that restrain a person from carrying on a lawful trade or profession are void in Malaysia. This means most non-compete clauses are unenforceable here.\n\n**Key Takeaway:** Non-compete clauses are generally void in Malaysia — the law protects your right to work.' },
+  { keys: ['verbal','oral','written','proof'], answer: 'In Malaysia, verbal contracts are generally valid under the Contracts Act 1950 — you don\'t always need a written contract. However, proving a verbal contract in court is very difficult because it\'s your word against theirs. Certain contracts (like for land) must be in writing by law.\n\n**Key Takeaway:** Verbal contracts are legal but hard to prove — always get important agreements in writing.' },
+  { keys: ['breach','broken','default','fail'], answer: 'If someone breaks (breaches) a contract in Malaysia, the other party can claim damages under Section 74 of the Contracts Act 1950. You can recover losses that naturally arise from the breach, or losses both parties knew were possible when they made the contract. You also have a duty to minimise your own losses.\n\n**Key Takeaway:** If someone breaks a contract, you can sue for compensation, but only for losses you can prove.' },
+  { keys: ['refund','money back','cancel','void'], answer: 'If a contract is void or voidable, any money paid must generally be returned under Section 65 of the Contracts Act 1950. If the other party misled you (misrepresentation) or forced you to sign (coercion), you may be able to void the contract and get your money back.\n\n**Key Takeaway:** If a contract is invalid or you were misled into signing it, you have the right to get your money back.' },
+  { keys: ['deposit','downpayment','advance'], answer: 'A deposit is money paid upfront to secure a deal. Whether it\'s refundable depends on the contract terms. If the contract says "non-refundable," courts may still order a refund if the other party caused the deal to fall through. Under Section 74, you can only forfeit a deposit if it\'s a genuine pre-estimate of loss, not a penalty.\n\n**Key Takeaway:** "Non-refundable" deposits can sometimes be recovered if the other party is at fault.' },
+  { keys: ['fired','terminate','dismiss','retrench','layoff','notice'], answer: 'Under the Employment Act 1955, your employer must give proper notice before termination: 4 weeks if you\'ve worked less than 2 years, 6 weeks for 2–5 years, and 8 weeks for 5+ years. If they skip notice, they must pay you the equivalent wages. Immediate dismissal is only lawful after a domestic inquiry for serious misconduct.\n\n**Key Takeaway:** Your employer cannot legally fire you without notice or compensation — document everything and file at JTKSM if they do.' },
+  { keys: ['salary','wage','pay','overtime','unpaid'], answer: 'Under the Employment Act 1955, your salary must be paid by the 7th of the following month. Overtime work must be compensated at 1.5× your hourly rate on weekdays, 2× on rest days, and 3× on public holidays. If your employer refuses to pay, file a complaint at the nearest Jabatan Tenaga Kerja (JTKSM).\n\n**Key Takeaway:** Unpaid wages and overtime are illegal — you have a legal right to every ringgit owed.' },
+  { keys: ['leave','annual leave','sick','medical','maternity'], answer: 'The Employment Act 1955 sets minimum leave entitlements: 8 days annual leave (under 2 years service), 12 days (2–5 years), 16 days (5+ years). Sick leave ranges from 14 to 22 days depending on service length. Maternity leave is 98 consecutive days. Your employment contract can only improve on these — never reduce them.\n\n**Key Takeaway:** These are the legal floor — your employer cannot legally give you less than what the Act provides.' },
+  { keys: ['faulty','defective','broken','product','goods','refund','consumer'], answer: 'Under the Consumer Protection Act 1999, goods must be of acceptable quality, fit for purpose, and match their description. If they\'re defective, you are entitled to a repair, replacement, or refund. "No refund" signs do not override the CPA — if the product is genuinely defective, the law is on your side. File a claim at the Tribunal for Consumer Claims (TTPM) for disputes up to RM50,000.\n\n**Key Takeaway:** A "no refund" policy cannot strip your rights under the Consumer Protection Act 1999.' },
+  { keys: ['landlord','tenant','rent','deposit','evict','tenancy'], answer: 'Malaysia does not yet have a dedicated Residential Tenancy Act, so disputes are governed by contract law and common law. Your landlord must return your security deposit (minus legitimate deductions for damage or unpaid rent) within a reasonable time after you vacate. A landlord cannot evict you by force or change your locks without a court order — that is illegal. Disputes can go to the Tribunal for Consumer Claims or civil court.\n\n**Key Takeaway:** Your landlord needs a court order to evict you — illegal eviction is a criminal matter.' },
+  { keys: ['data','privacy','personal data','pdpa','information'], answer: 'The Personal Data Protection Act 2010 (PDPA) requires companies to get your consent before collecting your personal data, tell you the purpose of collection, and keep it secure. You have the right to access your data and correct inaccuracies. If a company misuses or leaks your data, you can report them to the Personal Data Protection Commissioner.\n\n**Key Takeaway:** Companies must get your consent to collect your data — you have the right to access and correct it.' },
+  { keys: ['hire purchase','car loan','instalment','repossess'], answer: 'Under the Hire-Purchase Act 1967, if you miss instalments on a hire-purchase agreement (common for cars), the financier can repossess the asset — but only after following strict legal procedures. They must serve a default notice and give you time to remedy the breach. Unlawful repossession (e.g. seizing the car without notice) is illegal and actionable.\n\n**Key Takeaway:** Repossession requires proper legal notice — an unlawful seizure can be challenged in court.' },
+];
+
+function offlineCodex(question) {
+  const lower = question.toLowerCase();
+  for (const entry of CODEX_OFFLINE) {
+    if (entry.keys.some(k => lower.includes(k))) {
+      return '📚 OFFLINE CODEX — Limited answers available. Restore Gemini for full responses.\n\n' + entry.answer + '\n\n*This is for educational purposes only. Consult a qualified lawyer for actual legal matters.*';
+    }
+  }
+  return '📚 OFFLINE CODEX — Your question requires an internet connection to answer fully.\n\nCommon topics I can answer offline: minors and contracts, non-compete clauses, verbal contracts, breach of contract, refunds, deposits, employment termination, unpaid wages, leave entitlements, consumer rights, tenancy disputes, data privacy, and hire-purchase.\n\nPlease reconnect and try again for full AI-powered answers.';
 }
 
 /* ══ THEME ══════════════════════════════════════════════════ */
@@ -1050,6 +1633,197 @@ async function copyOutput(id) {
 // Allow Enter in key input
 document.getElementById('keyInput')?.addEventListener('keydown', e => {
   if (e.key === 'Enter') saveKey();
+});
+
+/* ══ JURISDICTION SYSTEM ════════════════════════════════════ */
+const JURISDICTIONS = [
+  {
+    code: 'MY', flag: '🇲🇾', name: 'Malaysia',
+    tagline: 'Malaysian Legal Armor',
+    city: 'Kuala Lumpur',
+    currency: 'RM',
+    acts: 'Contracts Act 1950, Employment Act 1955, Consumer Protection Act 1999, Personal Data Protection Act 2010, Hire-Purchase Act 1967',
+    scanActs: 'Contracts Act 1950, Employment Act 1955, Consumer Protection Act 1999',
+    codexActs: 'Contracts Act 1950, Employment Act 1955, Consumer Protection Act 1999, Personal Data Protection Act 2010, Hire-Purchase Act 1967, and residential tenancy law',
+    codexExample: 'Malaysia',
+    lawyerTitle: 'Malaysian contract lawyer',
+    jurisField: 'Kuala Lumpur, Malaysia — Contracts Act 1950',
+  },
+  {
+    code: 'IN', flag: '🇮🇳', name: 'India',
+    tagline: 'Indian Legal Armor',
+    city: 'New Delhi',
+    currency: '₹',
+    acts: 'Indian Contract Act 1872, IT Act 2000, Consumer Protection Act 2019, Specific Relief Act 1963, Arbitration & Conciliation Act 1996',
+    scanActs: 'Indian Contract Act 1872, Consumer Protection Act 2019, IT Act 2000',
+    codexActs: 'Indian Contract Act 1872, IT Act 2000, Consumer Protection Act 2019, Specific Relief Act 1963, Arbitration & Conciliation Act 1996, and labour law',
+    codexExample: 'India',
+    lawyerTitle: 'Indian contract lawyer',
+    jurisField: 'New Delhi, India — Indian Contract Act 1872',
+  },
+  {
+    code: 'SG', flag: '🇸🇬', name: 'Singapore',
+    tagline: 'Singapore Legal Armor',
+    city: 'Singapore',
+    currency: 'SGD',
+    acts: 'Contracts (Rights of Third Parties) Act, Employment Act, Personal Data Protection Act 2012, Consumer Protection (Fair Trading) Act',
+    scanActs: 'Employment Act, Personal Data Protection Act 2012, Consumer Protection (Fair Trading) Act',
+    codexActs: 'Contracts Act, Employment Act, Personal Data Protection Act 2012, Consumer Protection (Fair Trading) Act, and residential tenancy law',
+    codexExample: 'Singapore',
+    lawyerTitle: 'Singapore contract lawyer',
+    jurisField: 'Singapore — Singapore Contract Law',
+  },
+  {
+    code: 'GB', flag: '🇬🇧', name: 'United Kingdom',
+    tagline: 'UK Legal Armor',
+    city: 'London',
+    currency: '£',
+    acts: 'Contracts (Rights of Third Parties) Act 1999, Employment Rights Act 1996, Consumer Rights Act 2015, GDPR / UK GDPR, Sale of Goods Act 1979',
+    scanActs: 'Consumer Rights Act 2015, Employment Rights Act 1996, UK GDPR',
+    codexActs: 'Contracts (Rights of Third Parties) Act 1999, Employment Rights Act 1996, Consumer Rights Act 2015, UK GDPR, Sale of Goods Act 1979, and residential tenancy law',
+    codexExample: 'the UK',
+    lawyerTitle: 'UK contract solicitor',
+    jurisField: 'England & Wales — English Contract Law',
+  },
+  {
+    code: 'US', flag: '🇺🇸', name: 'United States',
+    tagline: 'US Legal Armor',
+    city: 'New York',
+    currency: '$',
+    acts: 'UCC (Uniform Commercial Code), Federal Arbitration Act, CCPA (California), NLRA, FLSA',
+    scanActs: 'UCC, CCPA, FLSA, Federal Arbitration Act',
+    codexActs: 'UCC (Uniform Commercial Code), FLSA, NLRA, Federal Arbitration Act, CCPA, and state contract law',
+    codexExample: 'the US',
+    lawyerTitle: 'US contract attorney',
+    jurisField: 'New York, USA — US Contract Law (UCC)',
+  },
+  {
+    code: 'AU', flag: '🇦🇺', name: 'Australia',
+    tagline: 'Australian Legal Armor',
+    city: 'Sydney',
+    currency: 'AUD',
+    acts: 'Australian Consumer Law (Competition and Consumer Act 2010), Fair Work Act 2009, Privacy Act 1988, Corporations Act 2001',
+    scanActs: 'Australian Consumer Law, Fair Work Act 2009, Privacy Act 1988',
+    codexActs: 'Australian Consumer Law, Fair Work Act 2009, Privacy Act 1988, Corporations Act 2001, and residential tenancy law',
+    codexExample: 'Australia',
+    lawyerTitle: 'Australian contract lawyer',
+    jurisField: 'Sydney, Australia — Australian Consumer Law',
+  },
+  {
+    code: 'AE', flag: '🇦🇪', name: 'UAE',
+    tagline: 'UAE Legal Armor',
+    city: 'Dubai',
+    currency: 'AED',
+    acts: 'UAE Civil Code (Federal Law No. 5 of 1985), UAE Labour Law (Federal Decree-Law No. 33 of 2021), UAE Commercial Companies Law',
+    scanActs: 'UAE Civil Code, UAE Labour Law, UAE Commercial Companies Law',
+    codexActs: 'UAE Civil Code (Federal Law No. 5 of 1985), UAE Labour Law (Federal Decree-Law No. 33 of 2021), UAE Commercial Companies Law, and DIFC law',
+    codexExample: 'the UAE',
+    lawyerTitle: 'UAE contract lawyer',
+    jurisField: 'Dubai, UAE — UAE Civil Code',
+  },
+  {
+    code: 'PH', flag: '🇵🇭', name: 'Philippines',
+    tagline: 'Philippine Legal Armor',
+    city: 'Manila',
+    currency: '₱',
+    acts: 'Civil Code of the Philippines, Labor Code, Consumer Act (RA 7394), Data Privacy Act 2012',
+    scanActs: 'Civil Code of the Philippines, Labor Code, Consumer Act RA 7394',
+    codexActs: 'Civil Code of the Philippines, Labor Code, Consumer Act (RA 7394), Data Privacy Act 2012, and residential tenancy law',
+    codexExample: 'the Philippines',
+    lawyerTitle: 'Philippine contract lawyer',
+    jurisField: 'Manila, Philippines — Civil Code of the Philippines',
+  },
+  {
+    code: 'ID', flag: '🇮🇩', name: 'Indonesia',
+    tagline: 'Indonesian Legal Armor',
+    city: 'Jakarta',
+    currency: 'Rp',
+    acts: 'Indonesian Civil Code (KUH Perdata), Manpower Law No. 13/2003, Consumer Protection Law No. 8/1999, Personal Data Protection Law 2022',
+    scanActs: 'Indonesian Civil Code, Manpower Law No. 13/2003, Consumer Protection Law No. 8/1999',
+    codexActs: 'Indonesian Civil Code (KUH Perdata), Manpower Law No. 13/2003, Consumer Protection Law No. 8/1999, Personal Data Protection Law 2022',
+    codexExample: 'Indonesia',
+    lawyerTitle: 'Indonesian contract lawyer',
+    jurisField: 'Jakarta, Indonesia — Indonesian Civil Code (KUH Perdata)',
+  },
+];
+
+let activeJurisdiction = JURISDICTIONS[0]; // default Malaysia
+
+function buildJurisdictionList() {
+  const list = document.getElementById('jurisList');
+  if (!list) return;
+  list.innerHTML = '';
+  JURISDICTIONS.forEach(j => {
+    const item = document.createElement('div');
+    item.style.cssText = `display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:background .15s;font-family:var(--font-b);font-size:.85rem;color:var(--text-mid);`;
+    item.innerHTML = `
+      <span style="font-size:1.1rem;line-height:1;">${j.flag}</span>
+      <span style="flex:1;">${j.name}</span>
+      ${j.code === activeJurisdiction.code ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--bronze)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>` : ''}
+    `;
+    item.onmouseenter = () => item.style.background = 'rgba(205,127,50,.08)';
+    item.onmouseleave = () => item.style.background = 'transparent';
+    item.onclick = () => selectJurisdiction(j);
+    list.appendChild(item);
+  });
+}
+
+function toggleJurisdictionPicker(e) {
+  e.stopPropagation();
+  const picker = document.getElementById('jurisdictionPicker');
+  const chevron = document.getElementById('jurisChevron');
+  const isOpen = picker.style.display !== 'none';
+  if (isOpen) {
+    picker.style.display = 'none';
+    chevron.style.transform = 'rotate(0deg)';
+  } else {
+    buildJurisdictionList();
+    picker.style.display = 'block';
+    chevron.style.transform = 'rotate(180deg)';
+  }
+}
+
+function selectJurisdiction(j) {
+  activeJurisdiction = j;
+
+  // Update badge
+  document.getElementById('badgeJurisdiction').textContent = j.name;
+  document.getElementById('badgeJurisdiction').style.color = 'var(--bronze)';
+
+  // Update tagline
+  const tl = document.getElementById('homeTagline');
+  if (tl) tl.textContent = j.tagline;
+
+  // Update drafter jurisdiction field
+  const jf = document.getElementById('d_jurisdiction');
+  if (jf) { jf.value = j.jurisField; jf.placeholder = j.jurisField; }
+
+  // Update status pill
+  const pills = document.querySelectorAll('.status-pill');
+  pills.forEach(p => {
+    if (p.textContent.includes('jurisdiction')) {
+      p.querySelector('span.pip') && (p.querySelector('span.pip').className = 'pip warn');
+      p.childNodes[p.childNodes.length - 1].textContent = ' ' + j.name + ' jurisdiction';
+    }
+  });
+
+  // Animate badge briefly
+  const badge = document.getElementById('jurisdictionBadge');
+  badge.style.borderColor = 'var(--bronze)';
+  badge.style.boxShadow = '0 0 14px rgba(205,127,50,.35)';
+  setTimeout(() => { badge.style.borderColor = ''; badge.style.boxShadow = ''; }, 700);
+
+  // Close picker
+  document.getElementById('jurisdictionPicker').style.display = 'none';
+  document.getElementById('jurisChevron').style.transform = 'rotate(0deg)';
+}
+
+// Close picker on outside click
+document.addEventListener('click', () => {
+  const picker = document.getElementById('jurisdictionPicker');
+  if (picker) picker.style.display = 'none';
+  const chevron = document.getElementById('jurisChevron');
+  if (chevron) chevron.style.transform = 'rotate(0deg)';
 });
 </script>
 </body>
