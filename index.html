@@ -34,6 +34,31 @@
       --font-m:       'Space Mono', monospace;
     }
 
+    /* ── LIGHT MODE ───────────────────────────────────────── */
+    body.light {
+      --bg:           #f5f2ed;
+      --surface:      #ede9e2;
+      --glass-bg:     rgba(240,235,225,0.85);
+      --glass-hover:  rgba(230,224,210,0.92);
+      --text-hi:      #1a1410;
+      --text-mid:     #5a5248;
+      --text-lo:      #9e9080;
+      --red-faint:    rgba(224,90,90,0.10);
+      --bronze-faint: rgba(205,127,50,0.12);
+    }
+    body.light .bg-layer::before{background:radial-gradient(ellipse at center,rgba(205,127,50,0.10) 0%,transparent 70%);}
+    body.light .field input,body.light .field textarea,body.light .field select,
+    body.light .scanner-text{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.12);color:var(--text-hi);}
+    body.light .field select option{background:#f0ebe0;color:var(--text-hi);}
+    body.light .topnav{background:rgba(245,242,237,0.85);}
+    body.light .output-box{background:rgba(240,235,225,0.9);}
+    body.light .key-card{background:rgba(240,235,225,0.95);}
+    body.light .key-input{background:rgba(0,0,0,.05);color:var(--text-hi);}
+    body.light .mode-card{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08);}
+    body.light .mode-card:hover{background:rgba(0,0,0,.08);}
+    body.light .glass{background:rgba(240,235,225,0.85);}
+    body.light .scan-line{display:none;}
+
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
 
@@ -131,7 +156,7 @@
       font-family:var(--font-d);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:600;
       color:var(--text-hi);line-height:1.1;margin-bottom:8px;
     }
-    .sect-sub{font-size:.8rem;color:var(--text-mid);line-height:1.7;margin-bottom:32px;}
+    .sect-sub{font-size:.95rem;color:var(--text-mid);line-height:1.7;margin-bottom:32px;}
 
     /* ── FORM ELEMENTS ────────────────────────────────────── */
     .field{margin-bottom:20px;}
@@ -142,7 +167,7 @@
     .field input,.field textarea,.field select{
       width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
       border-radius:10px;padding:12px 16px;color:var(--text-hi);font-family:var(--font-b);
-      font-size:.85rem;font-weight:300;transition:.25s var(--ease);outline:none;
+      font-size:.97rem;font-weight:300;transition:.25s var(--ease);outline:none;
       resize:vertical;
     }
     .field input:focus,.field textarea:focus,.field select:focus{
@@ -194,7 +219,7 @@
     }
     .output-label{font-family:var(--font-m);font-size:.58rem;letter-spacing:.25em;color:var(--bronze);text-transform:uppercase;}
     .output-content{
-      font-size:.82rem;line-height:1.9;color:var(--text-mid);
+      font-size:.97rem;line-height:1.9;color:var(--text-mid);
       white-space:pre-wrap;font-family:var(--font-b);font-weight:300;
     }
     .output-content strong{color:var(--text-hi);font-weight:500;}
@@ -235,13 +260,13 @@
     .scanner-text{
       width:100%;min-height:200px;background:rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.07);border-radius:12px;
-      padding:16px;color:var(--text-hi);font-family:var(--font-b);font-size:.82rem;
+      padding:16px;color:var(--text-hi);font-family:var(--font-b);font-size:.97rem;
       line-height:1.8;resize:vertical;outline:none;transition:.25s var(--ease);
     }
     .scanner-text:focus{border-color:var(--bronze-dim);box-shadow:0 0 0 3px rgba(205,127,50,.08);}
 
     .scanned-display{
-      min-height:120px;font-size:.82rem;line-height:1.9;color:var(--text-mid);
+      min-height:120px;font-size:.97rem;line-height:1.9;color:var(--text-mid);
       font-family:var(--font-b);font-weight:300;
     }
 
@@ -418,8 +443,12 @@
     <div class="key-divider"></div>
     <div class="key-title">Connect your API Key</div>
     <p class="key-body">
-      Pact runs entirely in your browser — no servers, no data sent anywhere except directly to Google's Gemini API with <em>your own key</em>.<br/><br/>
-      Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> → Create API key → paste below.
+      Pact runs entirely in your browser. Your key is never sent to us — only directly to Google's Gemini API.<br/><br/>
+      <strong style="color:var(--bronze)">Getting a free key takes 30 seconds:</strong><br/>
+      1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--bronze)">aistudio.google.com/app/apikey</a><br/>
+      2. Click <strong>Create API key</strong><br/>
+      3. Copy and paste it below<br/><br/>
+      <span style="color:var(--text-lo);font-size:.75rem;">The free tier gives you 1,500 requests/day — more than enough for personal use.</span>
     </p>
     <div class="key-input-wrap">
       <input class="key-input" id="keyInput" type="password" placeholder="AIza...your Gemini key" autocomplete="off" spellcheck="false"/>
@@ -451,10 +480,15 @@
       <button class="nav-tab" onclick="showPage('scanner',this)">Scanner</button>
       <button class="nav-tab" onclick="showPage('codex',this)">Codex</button>
     </div>
-    <button class="nav-key-btn" onclick="resetKey()">
-      <span class="key-pip" id="navPip"></span>
-      <span id="navKeyLabel">Key Active</span>
-    </button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="nav-key-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode" style="padding:7px 12px;">
+        <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="nav-key-btn" onclick="resetKey()">
+        <span class="key-pip" id="navPip"></span>
+        <span id="navKeyLabel">Key Active</span>
+      </button>
+    </div>
   </nav>
 
   <!-- ── HOME PAGE ────────────────────────────────────────── -->
@@ -696,7 +730,7 @@
 
 <script>
 /* ══ STATE ══════════════════════════════════════════════════ */
-const GEMINI_MODEL = 'gemini-2.5-flash-preview-05-20';
+const GEMINI_MODEL = 'gemini-2.5-flash';
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
 
 let apiKey = localStorage.getItem('pact_gemini_key') || '';
@@ -721,18 +755,51 @@ function toggleKeyVis() {
   }
 }
 
-function saveKey() {
+async function saveKey() {
   const raw = document.getElementById('keyInput').value.trim();
   const err = document.getElementById('keyError');
+  const btn = document.querySelector('.key-card .btn-primary');
+
   if (!raw) {
     err.style.display = 'block';
     err.textContent = 'Please paste your Gemini API key first.';
     return;
   }
+
+  if (!raw.startsWith('AIza')) {
+    err.style.display = 'block';
+    err.textContent = 'That doesn\'t look like a Gemini key. It should start with "AIza".';
+    return;
+  }
+
+  // Test the key with a minimal call
   err.style.display = 'none';
-  apiKey = raw;
-  localStorage.setItem('pact_gemini_key', apiKey);
-  showApp();
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .7s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Verifying key...';
+
+  try {
+    await callGemini('Say "ok"', raw);
+    apiKey = raw;
+    localStorage.setItem('pact_gemini_key', apiKey);
+    showApp();
+  } catch(e) {
+    err.style.display = 'block';
+    if (e.message.includes('429')) {
+      // Rate limited — key is probably fine, just accept it
+      apiKey = raw;
+      localStorage.setItem('pact_gemini_key', apiKey);
+      showApp();
+    } else if (e.message.includes('400') || e.message.includes('401') || e.message.includes('403')) {
+      err.textContent = 'Key rejected by Gemini. Double-check you copied it fully from Google AI Studio.';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Unlock Pact';
+    } else {
+      // Unknown error — accept the key anyway and let them try
+      apiKey = raw;
+      localStorage.setItem('pact_gemini_key', apiKey);
+      showApp();
+    }
+  }
 }
 
 function showApp() {
@@ -770,7 +837,7 @@ async function callGemini(prompt, key) {
       generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }
     })
   });
-  if (!resp.ok) throw new Error('API error ' + resp.status);
+  if (!resp.ok) throw new Error(String(resp.status));
   const data = await resp.json();
   return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
@@ -932,6 +999,27 @@ QUESTION: ${q}`;
     setLoading('codexBtn', false);
   }
 }
+
+/* ══ THEME ══════════════════════════════════════════════════ */
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('pact_theme', isLight ? 'light' : 'dark');
+  const icon = document.getElementById('themeIcon');
+  if (isLight) {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  } else {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  }
+}
+
+// Load saved theme
+(function() {
+  if (localStorage.getItem('pact_theme') === 'light') {
+    document.body.classList.add('light');
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+})();
 
 /* ══ UTILS ══════════════════════════════════════════════════ */
 function printOutput() {
